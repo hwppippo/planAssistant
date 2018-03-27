@@ -29,5 +29,5 @@
     </view>
   </block>
 
-  <button bindtap="newRepair" type="primary" class="add">新缴费</button>
+   <button bindtap="newRepair" type="primary" class="add">新缴费</button> 
 </view>

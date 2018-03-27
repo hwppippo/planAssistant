@@ -41,6 +41,7 @@ class Repair extends CI_Controller {
         'repair_time' => $arr['repair_time'],
         'repair_factory'=>$arr['repair_factory'],
         'repair_cost'=>$arr['repair_cost'],
+        'deduct'=>$arr['deduct'],
         'repair_location'=>$arr['repair_location'],
         'commet'=>$arr['commet'],
       ]);

@@ -12,7 +12,7 @@ Page({
     requestResult: '',
     array: ['交大项目', '秦汉大道', '秦韵佳苑', '司法小区'],
     car: ['陕A34512', '陕A34LB3'],
-    repair_type: ['日常保养', '油费', '过路费', '停车费', '轻微剐蹭', '重大维修'],
+    repair_type: ['日常保养', '油费', '过路费', '停车费', '违章停车', '重大维修'],
     people: ''
   },
 
@@ -68,6 +68,12 @@ Page({
     })
   },
 
+  deductContent: function (e) {
+    this.setData({
+      deductContent: e.detail.value
+    })
+  },
+
   commentContent: function (e) {
     this.setData({
       commentContent: e.detail.value
@@ -77,10 +83,11 @@ Page({
   formSubmit: function (e) {
     console.log('项目部', prj_value);
     console.log('车辆', car_value);
-    console.log('维修类型', type_value);
-    console.log('维修时间', this.data.startDate);
-    console.log('维修工厂', this.data.repair_factoryContent);
-    console.log('维修价格', this.data.repair_costContent);
+    console.log('缴费类型', type_value);
+    console.log('缴费时间', this.data.startDate);
+    console.log('缴费单位', this.data.repair_factoryContent);
+    console.log('费用', this.data.repair_costContent);
+    console.log('扣分', this.data.deductContent);
     var location = wx.getStorageSync('address')
     console.log('当前位置', location);
     var openId = wx.getStorageSync('openId');
@@ -104,6 +111,7 @@ Page({
           repair_time: this.data.startDate,
           repair_factory: this.data.repair_factoryContent,
           repair_cost: this.data.repair_costContent,
+          deduct: this.data.deductContent,
           repair_location: location,
           commet: this.data.commentContent
         },

@@ -31,7 +31,7 @@
   <view class="line"></view>
 
   <!-- 维修类型 -->
-    <view class="info">
+  <view class="info">
     <image class="info_icon" src="../../imgs/type.png" background-size="cover"></image>
     <view class="section">
       <picker name="repair_type" bindchange="repairTypeTap" value="{{index}}" range="{{repair_type}}">
@@ -52,7 +52,7 @@
 
   <view class="line"></view>
 
-    <!-- 维修周期 
+  <!-- 维修周期 
   <view class="info">
     <image class="info_icon" background-size="cover"></image>
     <input name="repair_cycle" placeholder="维修周期:" bindinput="repair_cycleContent" />
@@ -67,12 +67,19 @@
 
   <view class="line"></view>
 
-   <!-- 维修价格 -->
+  <!-- 维修价格 -->
   <view class="info">
     <image class="info_icon" background-size="cover" src="../../imgs/location.png"></image>
     <input name="repair_factory" placeholder="缴费地点" bindinput="repair_factoryContent" />
   </view>
 
+  <view class="line"></view>
+
+  <!-- 扣分 -->
+  <view class="info">
+    <image class="info_icon" background-size="cover" src="../../imgs/deduct.png"></image>
+    <input name="deduct" placeholder="扣分" bindinput="deductContent" />
+  </view>
   <view class="line"></view>
 
   <!-- 备注 -->
@@ -87,4 +94,4 @@
   <view class="center">
     <button type="primary" class="add" formType="submit"> 添加 </button>
   </view>
-</form> 
+</form>
