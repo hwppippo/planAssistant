@@ -1,0 +1,90 @@
+<!--index.wxml-->
+
+<include src="../tools/wxml/picker_datetime.wxml" />
+<form bindsubmit="formSubmit">
+  <!-- 项目选择 -->
+  <view class="info">
+    <image class="info_icon" src="../../imgs/prj.png" background-size="cover"></image>
+    <view class="section">
+      <picker name="prj_name" bindchange="prjTap" value="{{prj_index}}" range="{{array}}">
+        <view class="picker">
+          当前项目：{{array[prj_index]}}
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="line"></view>
+
+  <!-- 车辆选择 -->
+  <view class="info">
+    <image class="info_icon" src="../../imgs/carNum.png" background-size="cover"></image>
+    <view class="section">
+      <picker name="car_num" bindchange="carTap" value="{{car_index}}" range="{{car}}">
+        <view class="picker">
+          选择车辆：{{car[car_index]}}
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="line"></view>
+
+  <!-- 维修类型 -->
+    <view class="info">
+    <image class="info_icon" src="../../imgs/type.png" background-size="cover"></image>
+    <view class="section">
+      <picker name="repair_type" bindchange="repairTypeTap" value="{{index}}" range="{{repair_type}}">
+        <view class="picker">
+          缴费类型：{{repair_type[index]}}
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="line"></view>
+
+  <!-- 维修时间 -->
+  <view class="info">
+    <image class="info_icon" src="../../imgs/time.png" background-size="cover"></image>
+    <view name="repair_time" bindtap="startTap">缴费时间：{{startDate}}</view>
+  </view>
+
+  <view class="line"></view>
+
+    <!-- 维修周期 
+  <view class="info">
+    <image class="info_icon" background-size="cover"></image>
+    <input name="repair_cycle" placeholder="维修周期:" bindinput="repair_cycleContent" />
+  </view>
+  <view class="line"></view>  -->
+
+  <!-- 维修价格 -->
+  <view class="info">
+    <image class="info_icon" background-size="cover" src="../../imgs/cost.png"></image>
+    <input name="repair_cost" placeholder="费用" bindinput="repair_costContent" />
+  </view>
+
+  <view class="line"></view>
+
+   <!-- 维修价格 -->
+  <view class="info">
+    <image class="info_icon" background-size="cover" src="../../imgs/location.png"></image>
+    <input name="repair_factory" placeholder="缴费地点" bindinput="repair_factoryContent" />
+  </view>
+
+  <view class="line"></view>
+
+  <!-- 备注 -->
+  <view class="info">
+    <image class="info_icon" background-size="cover" src="../../imgs/commet.png"></image>
+    <input name="comment" placeholder="备注" bindinput="commentContent" />
+  </view>
+  <!-- placeholder-style="color:red" -->
+
+  <view class="line"></view>
+
+  <view class="center">
+    <button type="primary" class="add" formType="submit"> 添加 </button>
+  </view>
+</form> 

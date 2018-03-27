@@ -1,0 +1,33 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/addPlan/add",
+    "pages/addRepair/add",    
+    "pages/repair/repair"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "工作云助手",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#333",
+    "selectedColor": "#d24a58",
+    "backgroundColor": "#f6f6f7",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "用车",
+        "iconPath": "imgs/car-b.png",
+        "selectedIconPath": "imgs/car-red.png"
+      },{
+        "pagePath": "pages/repair/repair",
+        "text": "缴费",
+        "iconPath": "imgs/cost-b.png",
+        "selectedIconPath": "imgs/cost-red.png"
+      }
+    ]
+  }
+}

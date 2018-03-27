@@ -1,0 +1,68 @@
+<!--index.wxml-->
+
+<include src="../tools/wxml/picker_datetime.wxml" />
+<form bindsubmit="formSubmit">
+  <!-- 项目选择 -->
+  <view class="info">
+    <image class="info_icon" src="../../imgs/prj.png" background-size="cover"></image>
+    <view class="section">
+      <picker name="prj_name" bindchange="prjTap" value="{{prj_index}}" range="{{array}}">
+        <view class="picker">
+          当前项目：{{array[prj_index]}}
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="line"></view>
+
+  <!-- 项目选择 -->
+  <view class="info">
+    <image class="info_icon" src="../../imgs/carNum.png" background-size="cover"></image>
+    <view class="section">
+      <picker name="car_num" bindchange="carTap" value="{{car_index}}" range="{{car}}">
+        <view class="picker">
+          选择车辆：{{car[car_index]}}
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="line"></view>
+
+  <!-- 起始时间 -->
+  <view class="info">
+    <image class="info_icon" src="../../imgs/starttime.png" background-size="cover"></image>
+    <view name="start_time" bindtap="startTap">开始时间：{{startDate}}</view>
+  </view>
+
+  <view class="line"></view>
+
+  <!-- 结束时间 -->
+  <view class="info">
+    <image class="info_icon" src="../../imgs/endtime.png" background-size="cover"></image>
+    <view name="end_time" bindtap="endTap">结束时间：{{endDate}}</view>
+  </view>
+
+  <view class="line"></view>
+
+  <!-- 目的地 -->
+  <view class="info">
+    <image class="info_icon" src="../../imgs/location.png" background-size="cover"></image>
+    <input name="commet" placeholder="出车事由:"  bindinput="commet" />
+  </view>
+    <view class="line"></view>
+
+  <!-- 目的地 -->
+  <view class="info">
+    <image class="info_icon" src="../../imgs/dest.png" background-size="cover"></image>
+    <input name="destPlace" placeholder="目的地:"  bindinput="placeContent" />
+  </view>
+  <!-- placeholder-style="color:red" -->
+
+  <view class="line"></view>
+
+  <view class="center">
+    <button type="primary" class="add" formType="submit"> 添加 </button>
+  </view>
+</form>
