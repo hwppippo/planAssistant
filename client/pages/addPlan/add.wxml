@@ -48,7 +48,7 @@
 
   <!-- 目的地 -->
   <view class="info">
-    <image class="info_icon" src="../../imgs/location.png" background-size="cover"></image>
+    <image class="info_icon" src="../../imgs/commet.png" background-size="cover"></image>
     <input name="commet" placeholder="出车事由:"  bindinput="commet" />
   </view>
     <view class="line"></view>

@@ -31,3 +31,13 @@
   display: flex;
   justify-content: center;
 }
+
+/* .plan-add {
+  background-color: #fff;
+  position: fixed;
+  width: 90%;
+  bottom: 2px;
+  border: 0 solid #fff;
+  border-radius: 500px;
+} */
+

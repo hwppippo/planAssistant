@@ -137,9 +137,3 @@ page {
   border-bottom: 2rpx solid #ddd;
 }
 
-.plan-add {
-	position: fixed;
-	bottom: 0;
-	width: 95%;
-  border-bottom: 25rpx
-}
