@@ -31,7 +31,7 @@
   <view class="line"></view>
 
   <!-- 维修类型 -->
-  <view class="info">
+  <view class="info" id="{{item.id}}">
     <image class="info_icon" src="../../imgs/type.png" background-size="cover"></image>
     <view class="section">
       <picker name="repair_type" bindchange="repairTypeTap" value="{{index}}" range="{{repair_type}}">
@@ -76,7 +76,7 @@
   <view class="line"></view>
 
   <!-- 扣分 -->
-  <view class="info">
+  <view class=" {{showView?'view_show':'view_hide'}} info" >
     <image class="info_icon" background-size="cover" src="../../imgs/deduct.png"></image>
     <input name="deduct" placeholder="扣分" bindinput="deductContent" />
   </view>

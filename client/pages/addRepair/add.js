@@ -6,6 +6,7 @@ var prj_value, car_value, type_value;
 
 Page({
   data: {
+    showView: false,
     userInfo: {},
     logged: false,
     takeSession: false,
@@ -29,7 +30,16 @@ Page({
         that.data.people = userInfo.nickName
       }
     })
+    showView: (this.data.showView == "true" ? true : false)
   },
+
+  // //切换隐藏和显示 
+  // toggleBtn: function (e) {
+  //   var that = this;
+  //   that.setData({
+  //     index: e.detail.value
+  //   })
+  // },
 
   prjTap: function (e) {
     this.setData({
@@ -50,6 +60,16 @@ Page({
       index: e.detail.value
     })
     type_value = this.data.repair_type[e.detail.value];
+    // console.log('类型', type_value);
+    if (type_value == "违章停车") {
+      this.setData({
+        showView: true
+      })
+    } else {
+      this.setData({
+        showView: false
+      })
+    }
   },
 
   startTap: function () {

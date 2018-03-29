@@ -31,3 +31,7 @@
   display: flex;
   justify-content: center;
 }
+
+.view_hide{ 
+ display: none; 
+} 
