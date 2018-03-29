@@ -33,7 +33,7 @@
   <!-- 起始时间 -->
   <view class="info">
     <image class="info_icon" src="../../imgs/starttime.png" background-size="cover"></image>
-    <view name="start_time" bindtap="startTap">开始时间：{{startDate}}</view>
+    <view name="start_time" bindtap="startTap">出车时间：{{startDate}}</view>
   </view>
 
   <view class="line"></view>

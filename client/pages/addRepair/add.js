@@ -6,6 +6,7 @@ var prj_value, car_value, type_value;
 
 Page({
   data: {
+    text: "票据",
     showView: false,
     userInfo: {},
     logged: false,

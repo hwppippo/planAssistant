@@ -11,7 +11,21 @@
   flex-direction: row;
   align-items: center;
   transition: all 300ms ease;
-  z-index: 1
+  z-index: 1;
+}
+
+.image_info {
+  margin-top: 20rpx;
+  height: 200rpx;
+  width: 100%;
+  background: #fff;
+  border-left: none;
+  border-right: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: all 300ms ease;
+  z-index: 1;
 }
 
 .info_icon {
@@ -32,6 +46,21 @@
   justify-content: center;
 }
 
-.view_hide{ 
- display: none; 
-} 
+.view_hide {
+  display: none;
+}
+
+.image-fl {
+  width: 30%;
+  float: left;
+}
+
+.image-fl-image {
+  padding-left: 15%;
+}
+
+.photo {
+  width: 120rpx;
+  height: 80rpx;
+  margin-left: 20rpx;
+}
