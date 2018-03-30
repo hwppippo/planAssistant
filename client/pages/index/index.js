@@ -57,7 +57,7 @@ Page({
   finishTap: function (e) {
     var that = this;
     wx.request({
-      url: getApp().data.servsers + 'planOrder/state', //接口地址
+      url: config.service.planStateUrl, //接口地址
       data: { id: e.currentTarget.dataset.aid },
       method: 'Get',
       header: {

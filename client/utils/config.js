@@ -31,9 +31,12 @@ var config = {
     //预约用车
     addPlanUrl: `${host}/weapp/planOrder/add`,
 
+    //完成用车
+    planStateUrl: `${host}/weapp/planOrder/state`,
+
     //缴费记录
     costUrl: `${host}/weapp/repair`,
-    
+
     //增加缴费
     addCostUrl: `${host}/weapp/repair/add`
   }
