@@ -72,7 +72,12 @@ class PlanOrder extends CI_Controller {
       }
       $conditions = 'id='.$id;
       //条件为字符串
-      $rows = DB::update('car_planOrder', ['isStop' =>1, 'realEndTime'=>time()], $conditions);
+      $year=date("Y");
+      $month=date("n");
+      $day=date("d");
+      $hour=date("H:i");
+      $time=$year.'年'.$month.'日'.$day.'日'.' '.$hour;
+      $rows = DB::update('car_planOrder', ['isStop' =>1, 'realEndTime'=>$time], $conditions);
        $this->json([
           'code' => 0,
           'data' => $rows

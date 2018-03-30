@@ -25,8 +25,8 @@
     </view>
 
     <view class='down clearfix {{uhide==item.id?"":"hidden"}}'>
-      <view class='ml30'>开始时间：{{item.startTime}}</view>
-      <view class='ml30'>结束时间：{{item.endTime}}</view>
+      <view class='ml30'>出车时间：{{item.startTime}}</view>
+      <view class='ml30'>结束时间：{{item.realEndTime}}</view>
       <view class='ml30'>起始地点：{{item.location}}</view>
       <view class='feedBack'>详情</view>
     </view>
