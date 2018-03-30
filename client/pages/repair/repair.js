@@ -9,7 +9,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    openId: ''
+    openId: '',
+    imagelist: []
   },
 
   /**
@@ -28,6 +29,16 @@ Page({
   newRepair: function () {
     wx.navigateTo({
       url: '../addRepair/add',
+    })
+  },
+
+  previewImage: function (e) {
+    var current = e.target.dataset.src;
+    console.log('addr:', current);
+    this.data.imagelist[0] = current;
+    wx.previewImage({
+      current: current,                  // 当前显示图片的 http 链接  
+      urls: this.data.imagelist           // 需要预览的图片 http 链接列表  
     })
   },
 

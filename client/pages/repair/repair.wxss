@@ -5,6 +5,11 @@
   float: left;
 }
 
+.image-fr {
+  width: 30%;
+  float: right;
+}
+
 .nearCard-fl image {
   width: 150rpx;
   height: 150rpx;
@@ -24,26 +29,15 @@
   font-size: 27rpx;
 }
 
-.section_book {
-    width:120rpx;
-    height:80rpx;
-    font-size:26rpx;
-    border-radius:100%;
-    line-height: 80rpx;
-    color:#000;
-    text-align: center;
-    margin-top:50rpx;
-    margin-right:20rpx;
+.red {
+  background: #b03060;
+  color: #fff;
 }
-.red{
-  background:#B03060;
-  color:#fff;
+
+.blue {
+  background: #79cdcd;
+  color: #000;
 }
-  
-.blue{
-  background:#79CDCD;
-  color:#000;
-}  
 
 .down {
   width: 95%;

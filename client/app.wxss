@@ -49,3 +49,25 @@
   border: 0 solid #fff;
   border-radius: 500px;
 }
+
+.section_book {
+    width:120rpx;
+    height:80rpx;
+    font-size:26rpx;
+    border-radius:100%;
+    line-height: 80rpx;
+    color:#000;
+    text-align: center;
+    margin-top:50rpx;
+    margin-right:20rpx;
+}
+
+.red{
+  background:#B03060;
+  color:#fff;
+}
+  
+.blue{
+  background:#79CDCD;
+  color:#000;
+}  

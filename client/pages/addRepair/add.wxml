@@ -72,10 +72,10 @@
     <image class="info_icon" background-size="cover" src="../../imgs/invoice.png"></image>
     <text>{{text}}</text>
     <view class='image-fl image-fl-image'>
-      <image style="width: 150px; height: 150px;" mode="aspectFit" src="{{invoice}}"></image>
+      <image style="width: 120px; height: 100px;" mode="aspectFit" src="{{invoice}}"></image>
     </view>
     <view class='image-fl-image'>
-      <image style="width: 50px; height: 50px;" mode="aspectFit" src="../../imgs/photo.png"></image>
+      <image style="width: 50px; height: 50px;" mode="aspectFit" src="../../imgs/photo.png" bindtap="photoTap"></image>
     </view>
   </view>
 

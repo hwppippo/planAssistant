@@ -8,26 +8,30 @@
       </view>
 
       <view class='nearCard-fm' bindtap='toggleBtn' id="{{item.id}}">
-        <view>缴费时间：
+        <view>时间：
           <text class='c-green'>{{item.repair_time}}</text>
         </view>
         <view>车型：
           <text class='c-green'>{{item.carNum}}</text>
         </view>
-        <view>缴费类型：
+        <view>类型：
           <text class='c-green'>{{item.repair_type}}</text>
         </view>
+      </view>
+
+      <view class='section_book {{item.invoice==NULL?"hidden":""}}'>
+        <image bindtap="previewImage" src="../../imgs/invoice_2.png" data-src="{{item.invoice}}"></image>  
       </view>
     </view>
 
     <view class='down clearfix {{uhide==item.id?"":"hidden"}}'>
       <!-- <view class='ml30'>维修时长：{{item.time_consuming}}</view> -->
-      <view class='ml30'>缴费单位：{{item.repair_factory}}</view>
       <view class='ml30'>费用：{{item.repair_cost}}</view>
+       <view class='ml30 {{item.deduct==0?"hidden":""}}'>扣分：{{item.deduct}}</view>
       <view class='ml30'>缴费地点：{{item.repair_location}}</view>
       <view class='feedBack'>详情</view>
     </view>
   </block>
 
-   <button bindtap="newRepair" type="primary" class="add">新缴费</button> 
+  <button bindtap="newRepair" type="primary" class="add">新缴费</button>
 </view>
