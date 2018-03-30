@@ -83,7 +83,7 @@ Page({
       util.showError('目的地不能为空')
     } else {
       wx.request({
-        url: getApp().data.servsers + 'planOrder/add',
+        url: config.service.addPlanUrl,
         data: {
           prj: prj_value, carNum: car_value,
           open_id: openId,

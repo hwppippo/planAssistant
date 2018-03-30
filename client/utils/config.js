@@ -23,7 +23,19 @@ var config = {
     tunnelUrl: `${host}/weapp/tunnel`,
 
     // 上传图片接口
-    uploadUrl: `${host}/weapp/upload`
+    uploadUrl: `${host}/weapp/upload`,
+
+    //用车列表
+    planOrderUrl: `${host}/weapp/planOrder`,
+
+    //预约用车
+    addPlanUrl: `${host}/weapp/planOrder/add`,
+
+    //缴费记录
+    costUrl: `${host}/weapp/repair`,
+    
+    //增加缴费
+    addCostUrl: `${host}/weapp/repair/add`
   }
 };
 

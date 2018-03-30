@@ -120,7 +120,7 @@ Page({
         })
         var tempFilePaths = res.tempFilePaths[0]
         wx.uploadFile({
-          url: getApp().data.servsers + 'upload',
+          url: config.service.uploadUrl,
           filePath: tempFilePaths,
           name: 'file',
           formData: {
@@ -183,7 +183,7 @@ Page({
       util.showError('价格不能为空')
     } else {
       wx.request({
-        url: 'https://4z2dgktq.qcloud.la/weapp/repair/add',
+        url: config.service.addCostUrl,
         data: {
           prj: prj_value, carNum: car_value,
           open_id: openId,

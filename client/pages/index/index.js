@@ -38,7 +38,7 @@ Page({
   getInfo: function (openid) {
     var that = this;
     wx.request({
-      url: getApp().data.servsers+'planOrder', //接口地址
+      url: config.service.planOrderUrl, //接口地址
       data: { open_id: openid },
       method: 'Get',
       header: {

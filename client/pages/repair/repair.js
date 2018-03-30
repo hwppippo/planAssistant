@@ -46,7 +46,7 @@ Page({
   getInfo: function (openid) {
     var that = this;
     wx.request({
-      url: getApp().data.servsers+'repair', //接口地址
+      url: config.service.costUrl, //接口地址
       data: { open_id: openid },
       method: 'Get',
       header: {
