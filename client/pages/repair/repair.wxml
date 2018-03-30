@@ -19,7 +19,7 @@
         </view>
       </view>
 
-      <view class='section_book {{item.invoice==NULL?"hidden":""}}'>
+      <view class="section_book {{item.invoice==''?'hidden':''}}">
         <image bindtap="previewImage" src="../../imgs/invoice_2.png" data-src="{{item.invoice}}"></image>  
       </view>
     </view>

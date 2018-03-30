@@ -2,7 +2,7 @@ var pickerFile = require('../tools/js/picker_datetime.js');
 var qcloud = require('../../vendor/wafer2-client-sdk/index')
 var util = require('../../utils/util.js');
 var config = require('../../utils/config.js')
-var prj_value,car_value;
+var prj_value, car_value;
 
 Page({
   data: {
@@ -12,7 +12,7 @@ Page({
     requestResult: '',
 
     array: ['交大项目', '秦汉大道', '秦韵佳苑', '司法小区'],
-    car:['陕A34512','陕A34LB3'],
+    car: ['陕A34512', '陕A34LB3'],
     people: ''
   },
 
@@ -77,15 +77,15 @@ Page({
       util.showError('项目不能为空')
     } else if (car_value == null) {
       util.showError('车辆不能为空')
-    }else if (this.data.startDate == null || this.data.endDate == null) {
+    } else if (this.data.startDate == null || this.data.endDate == null) {
       util.showError('时间不能为空')
     } else if (e.detail.value.destPlace.length == 0) {
       util.showError('目的地不能为空')
     } else {
       wx.request({
-        url: 'https://4z2dgktq.qcloud.la/weapp/planOrder/add',
+        url: getApp().data.servsers + 'planOrder/add',
         data: {
-          prj: prj_value, carNum:car_value,
+          prj: prj_value, carNum: car_value,
           open_id: openId,
           startTime: this.data.startDate, endTime:
           this.data.endDate, user: this.data.people,

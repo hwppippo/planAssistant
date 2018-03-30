@@ -38,7 +38,7 @@ Page({
   getInfo: function (openid) {
     var that = this;
     wx.request({
-      url: 'https://4z2dgktq.qcloud.la/weapp/planOrder', //接口地址
+      url: getApp().data.servsers+'planOrder', //接口地址
       data: { open_id: openid },
       method: 'Get',
       header: {
@@ -57,7 +57,7 @@ Page({
   finishTap: function (e) {
     var that = this;
     wx.request({
-      url: 'https://4z2dgktq.qcloud.la/weapp/planOrder/state', //接口地址
+      url: getApp().data.servsers + 'planOrder/state', //接口地址
       data: { id: e.currentTarget.dataset.aid },
       method: 'Get',
       header: {

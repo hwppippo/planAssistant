@@ -4,6 +4,9 @@ var qcloud = require('./vendor/wafer2-client-sdk/index')
 var config = require('./utils/config.js');
 
 App({
+  data: {
+    servsers: "https://4z2dgktq.qcloud.la/weapp/"
+  },
   onLaunch: function () {
     console.log('App Launch')
     qcloud.setLoginUrl(config.service.loginUrl);

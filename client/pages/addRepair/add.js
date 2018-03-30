@@ -120,7 +120,7 @@ Page({
         })
         var tempFilePaths = res.tempFilePaths[0]
         wx.uploadFile({
-          url: 'https://4z2dgktq.qcloud.la/weapp/upload',
+          url: getApp().data.servsers + 'upload',
           filePath: tempFilePaths,
           name: 'file',
           formData: {
@@ -190,7 +190,7 @@ Page({
           repair_type: type_value,
           repair_time: this.data.startDate,
           repair_cost: this.data.repair_costContent,
-          invoice: "https://wafer-1252931863.cos.ap-guangzhou.myqcloud.com/" + this.data.invoice_photo,
+          invoice: this.data.invoice_photo,
           deduct: this.data.deductContent,
           repair_location: location,
           commet: this.data.commentContent

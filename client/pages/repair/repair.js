@@ -10,7 +10,8 @@ Page({
    */
   data: {
     openId: '',
-    imagelist: []
+    imagelist: [],
+    imageUrl: "https://wafer-1252931863.cos.ap-guangzhou.myqcloud.com/",
   },
 
   /**
@@ -35,7 +36,7 @@ Page({
   previewImage: function (e) {
     var current = e.target.dataset.src;
     console.log('addr:', current);
-    this.data.imagelist[0] = current;
+    this.data.imagelist[0] = this.data.imageUrl + current;
     wx.previewImage({
       current: current,                  // 当前显示图片的 http 链接  
       urls: this.data.imagelist           // 需要预览的图片 http 链接列表  
@@ -45,7 +46,7 @@ Page({
   getInfo: function (openid) {
     var that = this;
     wx.request({
-      url: 'https://4z2dgktq.qcloud.la/weapp/repair', //接口地址
+      url: getApp().data.servsers+'repair', //接口地址
       data: { open_id: openid },
       method: 'Get',
       header: {
