@@ -33,5 +33,7 @@
     </view>
   </block>
 
-  <button bindtap="newRepair" type="primary" class="add">新缴费</button>
+  <view class="add">
+    <button class="zan-btn zan-btn--primary" bindtap="newRepair">新缴费</button>
+  </view>
 </view>

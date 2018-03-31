@@ -3,6 +3,7 @@
   background: #fff;
   margin-top: 10px;
   overflow: hidden;
+  z-index:2
 }
 
 .zan-panel::after {

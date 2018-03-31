@@ -1,18 +1,6 @@
 /**index.wxss**/
+@import "../libs/common/common.wxss";
 
-.info {
-  margin-top: 20rpx;
-  height: 100rpx;
-  width: 100%;
-  background: #fff;
-  border-left: none;
-  border-right: none;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  transition: all 300ms ease;
-  z-index: 1;
-}
 
 .image_info {
   margin-top: 20rpx;
@@ -26,24 +14,6 @@
   align-items: center;
   transition: all 300ms ease;
   z-index: 1;
-}
-
-.info_icon {
-  width: 50rpx;
-  height: 50rpx;
-  margin: 10rpx;
-  border-radius: 50%;
-}
-
-.line {
-  width: 100%;
-  height: 2rpx;
-  background: #aaa;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
 }
 
 .view_hide {

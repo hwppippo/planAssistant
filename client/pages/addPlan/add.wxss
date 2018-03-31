@@ -1,68 +1,36 @@
 /**index.wxss**/
+@import "../libs/common/common.wxss";
 
-.info {
-  margin-top: 20rpx;
-  height: 100rpx;
-  width: 100%;
-  background: #fff;
-  border-left: none;
-  border-right: none;
+.page-item {
+  margin: 0 30rpx;
+  padding: 40rpx 0;
+  border-bottom: 1px #ccc solid;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  transition: all 300ms ease;
-  z-index: 1
 }
 
-.info_icon {
-  width: 50rpx;
-  height: 50rpx;
-  margin: 10rpx;
-  border-radius: 50%;
-}
-
-.cell-height {
-  height: 60rpx;
-}
-
-.center {
-  /* display: flex;
-  justify-content: center; */
-  padding-right: 25rpx;
-}
-
-/* .plan-add {
-  background-color: #fff;
-  position: fixed;
-  width: 90%;
-  bottom: 2px;
-  border: 0 solid #fff;
-  border-radius: 500px;
-} */
-
-.page-item{
-    margin: 0 30rpx;
-    padding:40rpx 0;
-    border-bottom: 1px #ccc solid;
-    display: flex;
-    flex-direction: row;
-}
 /**垂直居中**/
- .vc{ display: flex; align-items: center; margin-right: 15rpx;} 
 
-.p-icon{
-    width:40rpx;
-    height: 40rpx;
+.vc {
+  display: flex;
+  align-items: center;
+  margin-right: 15rpx;
 }
 
-.item-name{
-    flex:1;
-    color:#333;
-    font-size: 15px;
-    margin-left: 20rpx;
+.p-icon {
+  width: 40rpx;
+  height: 40rpx;
 }
 
-.field-item-val{
-    flex:3;
-    font-size: 15px;
+.item-name {
+  flex: 1;
+  color: #333;
+  font-size: 15px;
+  margin-left: 20rpx;
 }
+
+.field-item-val {
+  flex: 3;
+  font-size: 15px;
+}
+

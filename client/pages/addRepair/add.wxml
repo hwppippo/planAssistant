@@ -1,6 +1,6 @@
 <!--index.wxml-->
 
-<include src="../tools/wxml/picker_datetime.wxml" />
+<include src="../libs/picker_datetime/picker_datetime.wxml" />
 <form bindsubmit="formSubmit">
   <!-- 项目选择 -->
   <view class="info">

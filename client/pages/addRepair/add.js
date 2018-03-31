@@ -1,4 +1,4 @@
-var pickerFile = require('../tools/js/picker_datetime.js');
+var pickerFile = require('../libs/picker_datetime/picker_datetime.js');
 var qcloud = require('../../vendor/wafer2-client-sdk/index')
 var util = require('../../utils/util.js');
 var config = require('../../utils/config.js')
