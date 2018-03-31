@@ -3,7 +3,8 @@
  */
 
 // 此处主机域名修改成腾讯云解决方案分配的域名
-var host = 'https://4z2dgktq.qcloud.la';
+var host = 'https://746828943.lzbplan.cn';
+var address='';
 
 var config = {
   qqMapApi: 'https://apis.map.qq.com/ws/geocoder/v1/',

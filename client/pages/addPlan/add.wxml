@@ -1,68 +1,69 @@
 <!--index.wxml-->
+<import src="../../utils/dist/dialog/index.wxml" />
+<import src="../../utils/dist/switch/index.wxml" />
 
 <include src="../tools/wxml/picker_datetime.wxml" />
 <form bindsubmit="formSubmit">
-  <!-- 项目选择 -->
-  <view class="info">
-    <image class="info_icon" src="../../imgs/prj.png" background-size="cover"></image>
-    <view class="section">
-      <picker name="prj_name" bindchange="prjTap" value="{{prj_index}}" range="{{array}}">
-        <view class="picker">
-          当前项目：{{array[prj_index]}}
-        </view>
-      </picker>
+
+  <template is="zan-dialog" data="{{ zanDialog }}"></template>
+
+  <view class="zan-panel">
+    <view class="zan-cell zan-cell--access cell-height" bindtap="selectPrjDialog">
+      <view class="vc">
+        <image src="../../imgs/prj.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">项目选择</view>
+      <view class="zan-cell__bd zan-font-15">{{prjType}}</view>
+      <view class="zan-cell__ft"></view>
+    </view>
+    <view class="zan-cell zan-cell--access cell-height" bindtap="selectCarDialog">
+      <view class="vc">
+        <image src="../../imgs/carNum.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">车辆选择</view>
+      <view class="zan-cell__bd zan-font-15">{{carType}}</view>
+      <view class="zan-cell__ft"></view>
+    </view>
+    <view class="zan-cell zan-cell--access cell-height" bindtap="startTime">
+      <view class="vc">
+        <image src="../../imgs/time.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">出车时间</view>
+      <view class="zan-cell__bd zan-font-15 center">{{startDate}}</view>
+      <view class="zan-cell__ft"></view>
+    </view>
+    <view class="zan-cell zan-cell--access cell-height" bindtap="endTime">
+      <view class="vc">
+        <image src="../../imgs/time.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">结束时间</view>
+      <view class="zan-cell__bd zan-font-15 center">{{endDate}}</view>
+      <view class="zan-cell__ft"></view>
+    </view>
+
+    <view class="zan-cell cell-height">
+      <view class="vc">
+        <image src="../../imgs/commet.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">出车事由</view>
+      <input name="commet" bindinput="commet" value="{{commetValue}}"/>
+      <view class="zan-cell__ft"></view>
+    </view>
+    <view class="zan-cell cell-height">
+      <view class="vc">
+        <image src="../../imgs/dest.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">目的地</view>
+      <input name="destPlace" bindinput="placeContent" value="{{placeValue}}"/>
+      <view class="zan-cell__ft"></view>
     </view>
   </view>
 
-  <view class="line"></view>
-
-  <!-- 项目选择 -->
-  <view class="info">
-    <image class="info_icon" src="../../imgs/carNum.png" background-size="cover"></image>
-    <view class="section">
-      <picker name="car_num" bindchange="carTap" value="{{car_index}}" range="{{car}}">
-        <view class="picker">
-          选择车辆：{{car[car_index]}}
-        </view>
-      </picker>
-    </view>
+  <view class="zan-btns">
+    <button class="zan-btn zan-btn--primary" formType="submit">添加</button>
+    <button class="zan-btn zan-btn--warn" bindtap='clearInput'>重置</button>
   </view>
-
-  <view class="line"></view>
-
-  <!-- 起始时间 -->
-  <view class="info">
-    <image class="info_icon" src="../../imgs/starttime.png" background-size="cover"></image>
-    <view name="start_time" bindtap="startTap">出车时间：{{startDate}}</view>
-  </view>
-
-  <view class="line"></view>
-
-  <!-- 结束时间 -->
-  <view class="info">
-    <image class="info_icon" src="../../imgs/endtime.png" background-size="cover"></image>
-    <view name="end_time" bindtap="endTap">结束时间：{{endDate}}</view>
-  </view>
-
-  <view class="line"></view>
-
-  <!-- 目的地 -->
-  <view class="info">
-    <image class="info_icon" src="../../imgs/commet.png" background-size="cover"></image>
-    <input name="commet" placeholder="出车事由:"  bindinput="commet" />
-  </view>
-    <view class="line"></view>
-
-  <!-- 目的地 -->
-  <view class="info">
-    <image class="info_icon" src="../../imgs/dest.png" background-size="cover"></image>
-    <input name="destPlace" placeholder="目的地:"  bindinput="placeContent" />
-  </view>
-  <!-- placeholder-style="color:red" -->
-
-  <view class="line"></view>
-
-  <view class="center">
-    <button type="primary" class="add" formType="submit"> 添加 </button>
-  </view>
+  <!-- <view class="center">
+  <button class="zan-btn zan-btn--primary" >添加</button>
+  </view> -->
 </form>

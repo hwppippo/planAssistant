@@ -21,15 +21,14 @@
   border-radius: 50%;
 }
 
-.line {
-  width: 100%;
-  height: 2rpx;
-  background: #aaa;
+.cell-height {
+  height: 60rpx;
 }
 
 .center {
-  display: flex;
-  justify-content: center;
+  /* display: flex;
+  justify-content: center; */
+  padding-right: 25rpx;
 }
 
 /* .plan-add {
@@ -41,3 +40,29 @@
   border-radius: 500px;
 } */
 
+.page-item{
+    margin: 0 30rpx;
+    padding:40rpx 0;
+    border-bottom: 1px #ccc solid;
+    display: flex;
+    flex-direction: row;
+}
+/**垂直居中**/
+ .vc{ display: flex; align-items: center; margin-right: 15rpx;} 
+
+.p-icon{
+    width:40rpx;
+    height: 40rpx;
+}
+
+.item-name{
+    flex:1;
+    color:#333;
+    font-size: 15px;
+    margin-left: 20rpx;
+}
+
+.field-item-val{
+    flex:3;
+    font-size: 15px;
+}

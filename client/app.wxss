@@ -1,4 +1,5 @@
 /**app.wxss**/
+@import "./utils/dist/index.wxss";
 
 .pick_datetime {
   position: fixed;

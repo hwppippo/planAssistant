@@ -3,6 +3,7 @@ var mylogin = require('../../utils/login.js');
 var qcloud = require('../../vendor/wafer2-client-sdk/index');
 var config = require('../../utils/config.js');
 
+
 Page({
 
   /**
@@ -26,7 +27,9 @@ Page({
     console.log('page onshow');
     //这里更新数据setData
     this.data.openId = wx.getStorageSync('openId');
-    this.getInfo(this.data.openId);
+    if (this.data.openId.length > 0) {
+      this.getInfo(this.data.openId);
+    }
   },
 
   newPlan: function () {

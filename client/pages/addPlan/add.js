@@ -4,7 +4,9 @@ var util = require('../../utils/util.js');
 var config = require('../../utils/config.js')
 var prj_value, car_value;
 
-Page({
+const Zan = require('../../utils/dist/index');
+
+Page(Object.assign({}, Zan.Dialog, {
   data: {
     userInfo: {},
     logged: false,
@@ -31,22 +33,10 @@ Page({
     })
   },
 
-  prjTap: function (e) {
-    this.setData({
-      prj_index: e.detail.value
-    })
-    prj_value = this.data.array[e.detail.value];
-  },
-  carTap: function (e) {
-    this.setData({
-      car_index: e.detail.value
-    })
-    car_value = this.data.car[e.detail.value];
-  },
-  startTap: function () {
+  startTime: function () {
     this.datetimePicker.setPicker('startDate');
   },
-  endTap: function () {
+  endTime: function () {
     this.datetimePicker.setPicker('endDate');
   },
   commet: function (e) {
@@ -60,37 +50,96 @@ Page({
       placeContent: e.detail.value
     })
   },
+
+  clearInput() {
+    this.data.placeContent=''
+    this.setData({
+      commetValue: '',
+      placeValue:'',
+      startDate:'',
+      endDate:'',
+      prjType:'',
+      carType:''
+    });
+  },
+
+  selectPrjDialog() {
+    this.showZanDialog({
+      buttonsShowVertical: true,
+      buttons: [{
+        text: '交大创新港',
+        color: '#3CC51F',
+        type: '交大创新港'
+      }, {
+        text: '秦韵佳苑',
+        color: '#3CC51F',
+        type: '秦韵佳苑'
+      }, {
+          text: '司法小区',
+          color: '#3CC51F',
+          type: '司法小区'
+      },{
+        text: '秦汉大道',
+        color: '#3CC51F',
+        type: '秦汉大道'
+      }]
+    }).then(({ type }) => {
+      console.log('=== dialog with vertical buttons ===', `type: ${type}`);
+      this.setData({
+        prjType: `${type}`
+      })
+    });
+  },
+
+  selectCarDialog() {
+    this.showZanDialog({
+      buttonsShowVertical: true,
+      buttons: [{
+        text: '陕A RT356',
+        color: 'red',
+        type: '陕A RT356'
+      }, {
+        text: '陕A 234G6',
+        color: '#3CC51F',
+        type: '陕A 234G6'
+      }]
+    }).then(({ type }) => {
+      console.log('=== dialog with vertical buttons ===', `type: ${type}`);
+      this.setData({
+        carType: `${type}`
+      })
+    });
+  },
+
   formSubmit: function (e) {
-    console.log('项目部', prj_value);
-    console.log('车辆', car_value);
+    console.log('项目部', this.data.prjType);
+    console.log('车辆', this.data.carType);
     console.log('时间值', this.data.startDate);
     console.log('时间值', this.data.endDate);
     console.log('人员', this.data.people);
-    console.log('事由', this.data.commet);
-    console.log('目的地', this.data.placeContent);
-    var location = wx.getStorageSync('address')
-    console.log('当前位置', location);
+    // var location = wx.getStorageSync('address')
+    console.log('当前位置', config.address);
     var openId = wx.getStorageSync('openId');
     console.log(openId);
 
-    if (prj_value == null) {
+    if (this.data.prjType == null) {
       util.showError('项目不能为空')
-    } else if (car_value == null) {
+    } else if (this.data.carType == null) {
       util.showError('车辆不能为空')
     } else if (this.data.startDate == null || this.data.endDate == null) {
       util.showError('时间不能为空')
-    } else if (e.detail.value.destPlace.length == 0) {
+    } else if (this.data.placeContent.length == 0) {
       util.showError('目的地不能为空')
     } else {
       wx.request({
         url: config.service.addPlanUrl,
         data: {
-          prj: prj_value, carNum: car_value,
+          prj: this.data.prjType, carNum: this.data.carType,
           open_id: openId,
           startTime: this.data.startDate, endTime:
           this.data.endDate, user: this.data.people,
           commet: this.data.commet,
-          location: location, destPlace: e.detail.value.destPlace
+          location: config.address, destPlace: this.data.placeContent
         },
         method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
         header: {
@@ -106,4 +155,4 @@ Page({
       })
     }
   }
-})
+}));
