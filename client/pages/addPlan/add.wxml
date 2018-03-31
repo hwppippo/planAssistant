@@ -46,7 +46,7 @@
         <image src="../../imgs/commet.png" mode="scaleToFill" class="p-icon" />
       </view>
       <view class="zan-cell__bd zan-font-15">出车事由</view>
-      <input name="commet" bindinput="commet" value="{{commetValue}}" />
+      <input name="commet" bindinput="commetContent" value="{{commetValue}}" />
       <view class="zan-cell__ft"></view>
     </view>
     <view class="zan-cell cell-height">

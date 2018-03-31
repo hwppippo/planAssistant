@@ -1,111 +1,93 @@
 <!--index.wxml-->
+<import src="../libs/dist/dialog/index.wxml" />
+<import src="../libs/dist/switch/index.wxml" />
 
 <include src="../libs/picker_datetime/picker_datetime.wxml" />
 <form bindsubmit="formSubmit">
-  <!-- 项目选择 -->
-  <view class="info">
-    <image class="info_icon" src="../../imgs/prj.png" background-size="cover"></image>
-    <view class="section">
-      <picker name="prj_name" bindchange="prjTap" value="{{prj_index}}" range="{{array}}">
-        <view class="picker">
-          当前项目：{{array[prj_index]}}
+
+  <template is="zan-dialog" data="{{ zanDialog }}"></template>
+
+  <view class="zan-panel">
+    <view class="zan-cell zan-cell--access cell-height" bindtap="selectPrjDialog">
+     <view class="vc">
+        <image src="../../imgs/prj.png" mode="scaleToFill" class="p-icon" />
         </view>
-      </picker>
+      <view class="zan-cell__bd zan-font-15">项目选择</view>
+      <view class="zan-cell__bd zan-font-15">{{prjType}}</view>
+      <view class="zan-cell__ft"></view>
     </view>
-  </view>
-
-  <view class="line"></view>
-
-  <!-- 车辆选择 -->
-  <view class="info">
-    <image class="info_icon" src="../../imgs/carNum.png" background-size="cover"></image>
-    <view class="section">
-      <picker name="car_num" bindchange="carTap" value="{{car_index}}" range="{{car}}">
-        <view class="picker">
-          选择车辆：{{car[car_index]}}
-        </view>
-      </picker>
+    <view class="zan-cell zan-cell--access cell-height" bindtap="selectCarDialog">
+      <view class="vc">
+        <image src="../../imgs/carNum.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">车辆选择</view>
+      <view class="zan-cell__bd zan-font-15">{{carType}}</view>
+      <view class="zan-cell__ft"></view>
     </view>
-  </view>
-
-  <view class="line"></view>
-
-  <!-- 缴费类型 -->
-  <view class="info" id="{{item.id}}">
-    <image class="info_icon" src="../../imgs/type.png" background-size="cover"></image>
-    <view class="section">
-      <picker name="repair_type" bindchange="repairTypeTap" value="{{index}}" range="{{repair_type}}">
-        <view class="picker">
-          缴费类型：{{repair_type[index]}}
-        </view>
-      </picker>
+    <view class="zan-cell zan-cell--access cell-height" bindtap="selectTypeDialog">
+      <view class="vc">
+        <image src="../../imgs/type.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">缴费类型</view>
+      <view class="zan-cell__bd zan-font-15 ">{{costType}}</view>
+      <view class="zan-cell__ft"></view>
     </view>
-  </view>
-
-  <view class="line"></view>
-
-  <!-- 时间 -->
-  <view class="info">
-    <image class="info_icon" src="../../imgs/time.png" background-size="cover"></image>
-    <view name="repair_time" bindtap="startTap">缴费时间：{{startDate}}</view>
-  </view>
-
-  <view class="line"></view>
-
-  <!-- 维修周期 
-  <view class="info">
-    <image class="info_icon" background-size="cover"></image>
-    <input name="repair_cycle" placeholder="维修周期:" bindinput="repair_cycleContent" />
-  </view>
-  <view class="line"></view>  -->
-
-  <!-- 费用 -->
-  <view class="info">
-    <image class="info_icon" background-size="cover" src="../../imgs/cost.png"></image>
-    <input name="repair_cost" placeholder="费用" bindinput="repair_costContent" />
-  </view>
-
-  <view class="line"></view>
-
-  <!--收据照片-->
-  <view class="image_info">
-    <image class="info_icon" background-size="cover" src="../../imgs/invoice.png"></image>
-    <text>{{text}}</text>
-    <view class='image-fl image-fl-image'>
-      <image style="width: 120px; height: 100px;" mode="aspectFit" src="{{invoice}}"></image>
+    <view class="zan-cell zan-cell--access cell-height" bindtap="startTap">
+      <view class="vc">
+        <image src="../../imgs/time.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">缴费日期</view>
+      <view class="zan-cell__bd zan-font-15 ">{{startDate}}</view>
+      <view class="zan-cell__ft"></view>
     </view>
-    <view class='image-fl-image'>
-      <image style="width: 50px; height: 50px;" mode="aspectFit" src="../../imgs/photo.png" bindtap="photoTap"></image>
+
+
+    <view class="zan-cell cell-height {{showView?'view_show':'view_hide'}}">
+      <view class="vc">
+        <image src="../../imgs/deduct.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">扣分</view>
+      <input name="deduct" bindinput="deductContent" value="{{deductValue}}" />
+      <view class="zan-cell__ft"></view>
     </view>
+
+    <view class="zan-cell cell-height">
+      <view class="vc">
+        <image src="../../imgs/cost.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">费用</view>
+      <input name="cost" bindinput="costContent" value="{{costValue}}" />
+      <view class="zan-cell__ft"></view>
+    </view>
+
+    <!--收据照片-->
+    <view class="zan-cell">
+    <view class="vc">
+      <image background-size="cover" src="../../imgs/invoice.png" class="p-icon"></image>
+      </view>
+      <text>票据</text>
+      <view class='image-fl image-fl-image'>
+        <image style="width: 120px; height: 100px;" mode="aspectFit" src="{{invoice}}"></image>
+      </view>
+      <view class='image-fl-image'>
+        <image style="width: 50px; height: 50px;" mode="aspectFit" src="../../imgs/photo.png" bindtap="photoTap"></image>
+      </view>
+    </view>
+
+
+    <view class="zan-cell cell-height">
+      <view class="vc">
+        <image src="../../imgs/commet.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">备注</view>
+      <input name="commet" bindinput="commentContent" value="{{commetValue}}" />
+      <view class="zan-cell__ft"></view>
+    </view>
+
   </view>
 
-  <!-- <view class="line"></view> -->
-
-  <!-- 地点 -->
-  <!-- <view class="info">
-    <image class="info_icon" background-size="cover" src="../../imgs/location.png"></image>
-    <input name="repair_factory" placeholder="缴费地点" bindinput="repair_factoryContent" />
-  </view> -->
-
-  <view class="line {{showView?'view_show':'view_hide'}}" ></view>
-
-  <!-- 扣分 -->
-  <view class=" {{showView?'view_show':'view_hide'}} info">
-    <image class="info_icon" background-size="cover" src="../../imgs/deduct.png"></image>
-    <input name="deduct" placeholder="扣分" bindinput="deductContent" />
-  </view>
-  <view class="line"></view>
-
-  <!-- 备注 -->
-  <view class="info">
-    <image class="info_icon" background-size="cover" src="../../imgs/commet.png"></image>
-    <input name="comment" placeholder="备注" bindinput="commentContent" />
-  </view>
-  <!-- placeholder-style="color:red" -->
-
-  <view class="line"></view>
-
-  <view class="center">
-    <button type="primary" class="add" formType="submit"> 添加 </button>
+  <view class="zan-btns">
+    <button class="zan-btn zan-btn--primary" formType="submit">添加</button>
+    <button class="zan-btn zan-btn--warn" bindtap='clearInput'>重置</button>
   </view>
 </form>

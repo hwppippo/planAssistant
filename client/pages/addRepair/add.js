@@ -4,7 +4,9 @@ var util = require('../../utils/util.js');
 var config = require('../../utils/config.js')
 var prj_value, car_value, type_value;
 
-Page({
+const Zan = require('../libs/dist/index');
+
+Page(Object.assign({}, Zan.Dialog, {
   data: {
     text: "票据",
     showView: false,
@@ -43,52 +45,98 @@ Page({
   //   })
   // },
 
-  prjTap: function (e) {
-    this.setData({
-      prj_index: e.detail.value
-    })
-    prj_value = this.data.array[e.detail.value];
+  selectPrjDialog() {
+    this.showZanDialog({
+      buttonsShowVertical: true,
+      buttons: [{
+        text: '交大创新港',
+        color: '#3CC51F',
+        type: '交大创新港'
+      }, {
+        text: '秦韵佳苑',
+        color: '#3CC51F',
+        type: '秦韵佳苑'
+      }, {
+        text: '司法小区',
+        color: '#3CC51F',
+        type: '司法小区'
+      }, {
+        text: '秦汉大道',
+        color: '#3CC51F',
+        type: '秦汉大道'
+      }]
+    }).then(({ type }) => {
+      console.log('=== dialog with vertical buttons ===', `type: ${type}`);
+      this.setData({
+        prjType: `${type}`
+      })
+    });
   },
 
-  carTap: function (e) {
-    this.setData({
-      car_index: e.detail.value
-    })
-    car_value = this.data.car[e.detail.value];
+  selectCarDialog() {
+    this.showZanDialog({
+      buttonsShowVertical: true,
+      buttons: [{
+        text: '陕A RT356',
+        color: 'red',
+        type: '陕A RT356'
+      }, {
+        text: '陕A 234G6',
+        color: '#3CC51F',
+        type: '陕A 234G6'
+      }]
+    }).then(({ type }) => {
+      console.log('=== dialog with vertical buttons ===', `type: ${type}`);
+      this.setData({
+        carType: `${type}`
+      })
+    });
   },
 
-  repairTypeTap: function (e) {
-    this.setData({
-      index: e.detail.value
-    })
-    type_value = this.data.repair_type[e.detail.value];
-    // console.log('类型', type_value);
-    if (type_value == "违章停车") {
+  selectTypeDialog() {
+    this.showZanDialog({
+      buttonsShowVertical: true,
+      buttons: [{
+        text: '日常保养',
+        color: '#3CC51F',
+        type: '日常保养'
+      }, {
+        text: '加油费',
+        color: '#3CC51F',
+        type: '加油费'
+      }, {
+        text: '过路费',
+        color: '#3CC51F',
+        type: '过路费'
+      }, {
+        text: '停车费',
+        color: '#3CC51F',
+        type: '停车费'
+      },{
+        text: '违章缴费',
+        color: '#3CC51F',
+        type: '违章缴费'
+      }]
+    }).then(({ type }) => {
+      console.log('=== dialog with vertical buttons ===', `type: ${type}`);
       this.setData({
-        showView: true
+        costType: `${type}`
       })
-    } else {
-      this.setData({
-        showView: false,
-        deductContent: 0
-      })
-    }
+      if (this.data.costType == "违章缴费") {
+        this.setData({
+          showView: true
+        })
+      } else {
+        this.setData({
+          showView: false,
+          deductContent: 0
+        })
+      }
+    });
   },
 
   startTap: function () {
     this.datetimePicker.setPicker('startDate');
-  },
-
-  repair_factoryContent: function (e) {
-    this.setData({
-      repair_factoryContent: e.detail.value
-    })
-  },
-
-  repair_costContent: function (e) {
-    this.setData({
-      repair_costContent: e.detail.value
-    })
   },
 
   photoTap: function (e) {
@@ -152,47 +200,65 @@ Page({
     })
   },
 
+  costContent: function (e) {
+    this.setData({
+      costContent: e.detail.value
+    })
+  },
+
   commentContent: function (e) {
     this.setData({
       commentContent: e.detail.value
     })
   },
 
+  clearInput() {
+    this.data.placeContent = ''
+    this.setData({
+      commetValue: '',
+      deductValue: '',
+      costValue:'',
+      startDate: '',
+      costType: '',
+      prjType: '',
+      carType: ''
+    });
+  },
+
   formSubmit: function (e) {
-    console.log('项目部', prj_value);
-    console.log('车辆', car_value);
-    console.log('缴费类型', type_value);
+    console.log('项目部', this.data.prjType);
+    console.log('车辆', this.data.carType);
+    console.log('缴费类型', this.data.costType);
     console.log('缴费时间', this.data.startDate);
     // console.log('缴费单位', this.data.repair_factoryContent);
-    console.log('费用', this.data.repair_costContent);
+    console.log('费用', this.data.costContent);
     console.log('扣分', this.data.deductContent);
     console.log('文件名', this.data.invoice_photo)
 
-    var location = wx.getStorageSync('address')
-    console.log('当前位置', location);
+    console.log('当前位置', config.address);
     var openId = wx.getStorageSync('openId');
     console.log(openId);
 
-    if (prj_value == null) {
+    if (this.data.prjType == null) {
       util.showError('项目不能为空')
-    } else if (car_value == null) {
+    } else if (this.data.carType == null) {
       util.showError('车辆不能为空')
     } else if (this.data.startDate == null) {
       util.showError('时间不能为空')
-    } else if (this.data.repair_costContent == 0) {
+    } else if (this.data.costContent == 0) {
       util.showError('价格不能为空')
     } else {
       wx.request({
         url: config.service.addCostUrl,
         data: {
-          prj: prj_value, carNum: car_value,
+          prj: this.data.prjType, carNum: this.data.carType,
           open_id: openId,
-          repair_type: type_value,
+          repair_type: this.data.costType,
           repair_time: this.data.startDate,
-          repair_cost: this.data.repair_costContent,
+          repair_cost: this.data.costContent,
           invoice: this.data.invoice_photo,
           deduct: this.data.deductContent,
-          repair_location: location,
+          repair_location: config.address,
           commet: this.data.commentContent
         },
         method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
@@ -212,4 +278,4 @@ Page({
       })
     }
   }
-})
+}));

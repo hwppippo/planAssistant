@@ -38,9 +38,10 @@ Page(Object.assign({}, Zan.Dialog, {
   endTime: function () {
     this.datetimePicker.setPicker('endDate');
   },
-  commet: function (e) {
+  
+  commetContent: function (e) {
     this.setData({
-      commet: e.detail.value
+      commetContent: e.detail.value
     })
   },
 
@@ -116,7 +117,6 @@ Page(Object.assign({}, Zan.Dialog, {
     console.log('时间值', this.data.startDate);
     console.log('时间值', this.data.endDate);
     console.log('人员', this.data.people);
-    // var location = wx.getStorageSync('address')
     console.log('当前位置', config.address);
     var openId = wx.getStorageSync('openId');
     console.log(openId);

@@ -1,7 +1,6 @@
 /**index.wxss**/
 @import "../libs/common/common.wxss";
 
-
 .image_info {
   margin-top: 20rpx;
   height: 200rpx;

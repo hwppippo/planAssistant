@@ -11,16 +11,8 @@
 
 /**垂直居中**/
 
-.vc {
-  display: flex;
-  align-items: center;
-  margin-right: 15rpx;
-}
 
-.p-icon {
-  width: 40rpx;
-  height: 40rpx;
-}
+
 
 .item-name {
   flex: 1;

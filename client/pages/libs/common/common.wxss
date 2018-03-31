@@ -198,12 +198,12 @@ image {
   z-index: 1;
 }
 
-.info_icon {
+/* .info_icon {
   width: 50rpx;
   height: 50rpx;
   margin: 10rpx;
   border-radius: 50%;
-}
+} */
 
 .line {
   width: 100%;
@@ -218,4 +218,15 @@ image {
 
 .cell-height{
   height: 25px;
+}
+
+.vc {
+  display: flex;
+  align-items: center;
+  margin-right: 15rpx;
+}
+
+.p-icon {
+  width: 40rpx;
+  height: 40rpx;
 }
