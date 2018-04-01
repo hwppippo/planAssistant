@@ -3,11 +3,11 @@
   <block wx:for-items="{{carInfoData}}">
     <view class='card  b-shadow'>
 
-      <view class='nearCard-fl' bindtap='toggleBtn'  id="{{item.id}}" >
+      <view class='nearCard-fl' bindtap='toggleBtn' id="{{item.id}}">
         <image src='../../imgs/car.png'></image>
       </view>
 
-      <view class='nearCard-fm' bindtap='toggleBtn'  id="{{item.id}}">
+      <view class='nearCard-fm' bindtap='toggleBtn' id="{{item.id}}">
         <view>日期：
           <text class='c-green'>{{item.startTime}}</text>
         </view>
@@ -19,20 +19,21 @@
         </view>
       </view>
 
-      <view class='section_book {{item.isStop==0?"red":"blue"}}' bindtap="finishTap" data-aid="{{item.id}}">
+      <view class='section_book {{item.isStop==0?"red":"blue"}}' bindtap="finishTap" data-aid="{{item.id}}" data-openid="{{item.open_id}}">
         <text>{{item.isStop==0?"进行中":"完成"}}</text>
       </view>
     </view>
 
     <view class='down clearfix {{uhide==item.id?"":"hidden"}}'>
+      <view class='ml30'>预约人：{{item.user}}</view>
       <view class='ml30'>出车时间：{{item.startTime}}</view>
       <view class='ml30'>结束时间：{{item.realEndTime}}</view>
       <view class='ml30'>起始地点：{{item.location}}</view>
       <view class='feedBack'>详情</view>
     </view>
   </block>
-  
-   <view class="add">
+
+  <view class="add">
     <button class="zan-btn zan-btn--primary" bindtap="newPlan">预约用车</button>
   </view>
 </view>

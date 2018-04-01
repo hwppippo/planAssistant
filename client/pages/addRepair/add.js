@@ -37,14 +37,6 @@ Page(Object.assign({}, Zan.Dialog, {
     showView: (this.data.showView == "true" ? true : false)
   },
 
-  // //切换隐藏和显示 
-  // toggleBtn: function (e) {
-  //   var that = this;
-  //   that.setData({
-  //     index: e.detail.value
-  //   })
-  // },
-
   selectPrjDialog() {
     this.showZanDialog({
       buttonsShowVertical: true,
@@ -268,12 +260,12 @@ Page(Object.assign({}, Zan.Dialog, {
         success: function (res) {
           console.log(res);
           if (res.data.code == 0) {
-            util.showSuccess('添加成功')
+            util.showSuccess('添加成功');
           }
         },
         fail: function (res) {
           console.log(res);
-          util.showSuccess('添加失败')
+          util.showSuccess('添加失败');
         }
       })
     }

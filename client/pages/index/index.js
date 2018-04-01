@@ -59,6 +59,11 @@ Page({
 
   finishTap: function (e) {
     var that = this;
+    // console.log('列表 openid:', e.currentTarget.dataset.openid);
+    if (this.data.openId !== e.currentTarget.dataset.openid){
+      util.showError('不能结束别人的预约');
+      return;
+    }
     wx.request({
       url: config.service.planStateUrl, //接口地址
       data: { id: e.currentTarget.dataset.aid },
