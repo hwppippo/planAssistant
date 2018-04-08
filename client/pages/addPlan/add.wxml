@@ -3,7 +3,7 @@
 <import src="../libs/dist/switch/index.wxml" />
 
 <include src="../libs/picker_datetime/picker_datetime.wxml" />
-<form bindsubmit="formSubmit">
+<form bindsubmit="formSubmit"  report-submit>
 
   <template is="zan-dialog" data="{{ zanDialog }}"></template>
 
@@ -29,7 +29,7 @@
         <image src="../../imgs/time.png" mode="scaleToFill" class="p-icon" />
       </view>
       <view class="zan-cell__bd zan-font-15">出车时间</view>
-      <view class="zan-cell__bd zan-font-15 center">{{startDate}}</view>
+      <view class="zan-cell__bd zan-font-15 ">{{startDate}}</view>
       <view class="zan-cell__ft"></view>
     </view>
     <view class="zan-cell zan-cell--access cell-height" bindtap="endTime">
@@ -37,7 +37,7 @@
         <image src="../../imgs/time.png" mode="scaleToFill" class="p-icon" />
       </view>
       <view class="zan-cell__bd zan-font-15">结束时间</view>
-      <view class="zan-cell__bd zan-font-15 center">{{endDate}}</view>
+      <view class="zan-cell__bd zan-font-15 ">{{endDate}}</view>
       <view class="zan-cell__ft"></view>
     </view>
 
@@ -47,7 +47,6 @@
       </view>
       <view class="zan-cell__bd zan-font-15">出车事由</view>
       <input name="commet" bindinput="commetContent" value="{{commetValue}}" />
-      <view class="zan-cell__ft"></view>
     </view>
     <view class="zan-cell cell-height">
       <view class="vc">
@@ -55,7 +54,6 @@
       </view>
       <view class="zan-cell__bd zan-font-15">目的地</view>
       <input name="destPlace" bindinput="placeContent" value="{{placeValue}}" />
-      <view class="zan-cell__ft"></view>
     </view>
 
   </view>

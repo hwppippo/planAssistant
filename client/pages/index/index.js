@@ -2,15 +2,19 @@ var util = require('../../utils/util.js');
 var mylogin = require('../../utils/login.js');
 var qcloud = require('../../vendor/wafer2-client-sdk/index');
 var config = require('../../utils/config.js');
+const Zan = require('../libs/dist/index');
 
-
-Page({
+Page(Object.assign({}, Zan.Dialog, {
 
   /**
    * 页面的初始数据
    */
   data: {
-    openId: ''
+    openId: '',
+    cauth: 0,//默认权限
+    curTargetOpenId: '',
+    curTargetState: '',
+    curTargetAid: ''
   },
 
   /**
@@ -48,34 +52,112 @@ Page({
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
       },
       success: function (res) {
-        console.log(res.data)
+        console.log(res.data.data);
+        if (res.data.code != 0) {
+          util.showError('没有预约');
+        }
         //设置车辆展示信息
         that.setData({
           carInfoData: res.data.data,
+          cauth: res.data.cauth,
         })
       }
     })
   },
 
-  finishTap: function (e) {
+  test: function (e) {
+    this.setData({
+      curTargetOpenId: e.currentTarget.dataset.openid,
+      curTargetState: e.currentTarget.dataset.state,
+      curTargetAid: e.currentTarget.dataset.aid
+    })
+  },
+
+  formSubmit: function (e) {
+    console.log(e.detail.formId);
+
+    console.log(this.data.curTargetOpenId);
+    console.log(this.data.curTargetState);
+    console.log(this.data.curTargetAid);
+
     var that = this;
-    // console.log('列表 openid:', e.currentTarget.dataset.openid);
-    if (this.data.openId !== e.currentTarget.dataset.openid){
-      util.showError('不能结束别人的预约');
+    if (that.data.cauth == 0) {
+      util.showError('没有审批权限');
       return;
     }
-    wx.request({
-      url: config.service.planStateUrl, //接口地址
-      data: { id: e.currentTarget.dataset.aid },
-      method: 'Get',
-      header: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
-      },
-      success: function (res) {
-        console.log(res.data)
-        that.getInfo(that.data.openId);
+
+    if (that.data.curTargetState == '不同意') {
+      util.showError('不能进行操作');
+      return;
+    }
+
+    if (that.data.curTargetState == '待审批') {
+      that.showZanDialog({
+        // buttonsShowVertical: true,
+        buttons: [{
+          text: '同意',
+          color: '#3CC51F',
+          type: '同意'
+        }, {
+          text: '不同意',
+          color: 'red',
+          type: '不同意'
+        }, {
+          text: '取消',
+          type: '取消'
+        }]
+      }).then(({ type }) => {
+        console.log('=== dialog with vertical buttons ===', `type: ${type}`);
+        if (`${type}` == '取消')
+          return;
+        wx.request({
+          url: config.service.planStateUrl, //接口地址
+          data: { id: that.data.curTargetAid, state: `${type}`, open_id: that.data.curTargetOpenId, form_id: e.detail.formId},
+          method: 'Get',
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+          },
+          success: function (res) {
+            console.log(res.data)
+            that.getInfo(that.data.openId);
+          }
+        })
+      });
+    } else if (that.data.curTargetState == '同意') {
+      console.log('data.openId', that.data.openId);
+      console.log('data.curTargetOpenid', that.data.curTargetOpenId);
+      if (that.data.openId != that.data.curTargetOpenId) {
+        util.showError('不能结束别人的预约');
+        return;
       }
-    })
+      that.showZanDialog({
+        // buttonsShowVertical: true,
+        buttons: [{
+          text: '完成',
+          color: '#3CC51F',
+          type: '完成'
+        }, {
+          text: '取消',
+          type: '取消'
+        }]
+      }).then(({ type }) => {
+        console.log('=== dialog with vertical buttons ===', `type: ${type}`);
+        if (`${type}` == '取消')
+          return;
+        wx.request({
+          url: config.service.planStateUrl, //接口地址
+          data: { id: that.data.curTargetAid, state: `${type}`, open_id: that.data.curTargetOpenId, form_id: e.detail.formId},
+          method: 'Get',
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+          },
+          success: function (res) {
+            console.log(res.data)
+            that.getInfo(that.data.openId);
+          }
+        })
+      });
+    }
   },
 
   //切换隐藏和显示 
@@ -118,4 +200,4 @@ Page({
       }
     })
   }
-})
+}));

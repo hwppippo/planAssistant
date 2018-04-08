@@ -47,7 +47,7 @@
         <image src="../../imgs/deduct.png" mode="scaleToFill" class="p-icon" />
       </view>
       <view class="zan-cell__bd zan-font-15">扣分</view>
-      <input name="deduct" bindinput="deductContent" value="{{deductValue}}" />
+      <input name="deduct" bindinput="deductContent" value="{{deductValue}}" type="number"/>
       <view class="zan-cell__ft"></view>
     </view>
 
@@ -55,9 +55,8 @@
       <view class="vc">
         <image src="../../imgs/cost.png" mode="scaleToFill" class="p-icon" />
       </view>
-      <view class="zan-cell__bd zan-font-15">费用</view>
-      <input name="cost" bindinput="costContent" value="{{costValue}}" />
-      <view class="zan-cell__ft"></view>
+      <view class="zan-cell__bd zan-font-15" >费用</view>
+      <input name="cost" bindinput="costContent" value="{{costValue}}" type="digit"/>
     </view>
 
     <!--收据照片-->
@@ -81,7 +80,6 @@
       </view>
       <view class="zan-cell__bd zan-font-15">备注</view>
       <input name="commet" bindinput="commentContent" value="{{commetValue}}" />
-      <view class="zan-cell__ft"></view>
     </view>
 
   </view>

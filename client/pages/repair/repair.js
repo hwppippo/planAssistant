@@ -54,6 +54,9 @@ Page({
       },
       success: function (res) {
         console.log(res.data)
+        if (res.data.code != 0) {
+          util.showError('没有缴费');
+        }
         //设置车辆展示信息
         that.setData({
           carInfoData: res.data.data,

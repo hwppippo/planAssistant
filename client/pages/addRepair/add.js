@@ -14,11 +14,15 @@ Page(Object.assign({}, Zan.Dialog, {
     logged: false,
     takeSession: false,
     requestResult: '',
-    array: ['交大项目', '秦汉大道', '秦韵佳苑', '司法小区'],
-    car: ['陕A34512', '陕A34LB3'],
-    repair_type: ['日常保养', '油费', '过路费', '停车费', '违章停车', '重大维修'],
     people: '',
-    invoice_photo: ''
+    invoice_photo: '',
+    commetValue: '',
+    deductValue: '',
+    costContent: '',
+    startDate: '',
+    costType: '',
+    prjType: '',
+    carType: ''
   },
 
   onLoad: function () {
@@ -69,13 +73,9 @@ Page(Object.assign({}, Zan.Dialog, {
     this.showZanDialog({
       buttonsShowVertical: true,
       buttons: [{
-        text: '陕A RT356',
+        text: '陕A 67cl7',
         color: 'red',
-        type: '陕A RT356'
-      }, {
-        text: '陕A 234G6',
-        color: '#3CC51F',
-        type: '陕A 234G6'
+        type: '陕A 67cl7'
       }]
     }).then(({ type }) => {
       console.log('=== dialog with vertical buttons ===', `type: ${type}`);
@@ -104,7 +104,7 @@ Page(Object.assign({}, Zan.Dialog, {
         text: '停车费',
         color: '#3CC51F',
         type: '停车费'
-      },{
+      }, {
         text: '违章缴费',
         color: '#3CC51F',
         type: '违章缴费'
@@ -207,13 +207,16 @@ Page(Object.assign({}, Zan.Dialog, {
   clearInput() {
     this.data.placeContent = ''
     this.setData({
-      commetValue: '',
-      deductValue: '',
+      commentContent: '',
       costValue:'',
+      deductContent: '',
+      costContent: '',
       startDate: '',
       costType: '',
       prjType: '',
-      carType: ''
+      carType: '',
+      invoice:'',
+      invoice_photo:''
     });
   },
 
@@ -231,14 +234,14 @@ Page(Object.assign({}, Zan.Dialog, {
     var openId = wx.getStorageSync('openId');
     console.log(openId);
 
-    if (this.data.prjType == null) {
+    if (this.data.prjType == '') {
       util.showError('项目不能为空')
-    } else if (this.data.carType == null) {
+    } else if (this.data.carType == '') {
       util.showError('车辆不能为空')
-    } else if (this.data.startDate == null) {
-      util.showError('时间不能为空')
-    } else if (this.data.costContent == 0) {
-      util.showError('价格不能为空')
+    } else if (this.data.startDate == '') {
+      util.showError('日期不能为空')
+    } else if (this.data.costContent == '') {
+      util.showError('费用不能为空')
     } else {
       wx.request({
         url: config.service.addCostUrl,
