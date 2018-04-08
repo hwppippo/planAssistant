@@ -1,0 +1,72 @@
+<!--index.wxml-->
+<import src="../libs/dist/select/index.wxml" />
+
+<form bindsubmit="formSubmit" report-submit>
+
+  <view class="zan-panel">
+    <view class="zan-cell zan-cell--access cell-height-approval">
+      <view class="vc">
+        <image src="../../imgs/prj.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">所属项目</view>
+      <view class="zan-cell__bd zan-font-15">{{prj}}</view>
+    </view>
+    <view class="zan-cell zan-cell--access cell-height-approval">
+      <view class="vc">
+        <image src="../../imgs/carNum.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">车辆号码</view>
+      <view class="zan-cell__bd zan-font-15">{{carNum}}</view>
+    </view>
+    <view class="zan-cell zan-cell--access cell-height-approval">
+      <view class="vc">
+        <image src="../../imgs/time.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">出车时间</view>
+      <view class="zan-cell__bd zan-font-15 ">{{startTime}}</view>
+    </view>
+    <view class="zan-cell zan-cell--access cell-height-approval">
+      <view class="vc">
+        <image src="../../imgs/time.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">结束时间</view>
+      <view class="zan-cell__bd zan-font-15 ">{{endTime}}</view>
+    </view>
+
+    <view class="zan-cell cell-height-approval">
+      <view class="vc">
+        <image src="../../imgs/commet.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">出车事由</view>
+      <view class="zan-cell__bd zan-font-15 ">{{commet=="undefined"?"":commet}}</view>
+    </view>
+    <view class="zan-cell cell-height-approval" >
+      <view class="vc">
+        <image src="../../imgs/dest.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">目的地</view>
+      <view class="zan-cell__bd zan-font-15 ">{{destPlace}}</view>
+    </view>
+
+    <view class="zan-cell cell-height">
+      <view class="vc">
+        <image src="../../imgs/dest.png" mode="scaleToFill" class="p-icon" />
+      </view>
+      <view class="zan-cell__bd zan-font-15">备注</view>
+      <input name="info" bindinput="infoContent" value="{{infoValue}}" />
+    </view>
+
+  </view>
+
+   <view class="zan-panel">
+      <view>
+        <template
+          is="zan-select"
+          data="{{ items, checkedValue: checked.form, name: 'result', componentId: 'form' }}" ></template>
+      </view>
+    </view>
+
+  <view class="zan-btns">
+    <button class="zan-btn zan-btn--primary" formType="submit">提交</button>
+  </view>
+</form>

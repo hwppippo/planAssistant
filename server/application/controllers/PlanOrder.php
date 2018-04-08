@@ -119,6 +119,8 @@ class PlanOrder extends CI_Controller {
       $state=$_GET['state'];
       $open_id=$_GET['open_id'];
       $form_id=$_GET['form_id'];
+      $car=$_GET['carNum'];
+      $time=$_GET['time'];
       
       $conditions = 'id='.$id;
       //条件为字符串
@@ -132,17 +134,12 @@ class PlanOrder extends CI_Controller {
         return;
 
       //发送审批模板消息,审批完状态
-      $this->send_msg($this->encode_approval_complete($id, $state), $open_id, $form_id);
+      $this->send_msg($this->encode_approval_complete($id, $state, $car, $time), $open_id, $form_id);
 
     }
-  public function encode_approval_complete($id, $state){
+  public function encode_approval_complete($id, $state, $car, $time){
       //先检测 Token
       $this->checkToken();
-      $conditions = 'id='.$id;
-      //先查询该 openid 的权限
-      $rows = DB::row('car_planOrder', ['*'], $conditions);
-      if($rows != null){
-        $comName=$rows->startTime;
         //拼接模块
         $value = array(
             "keyword1"=>array(
@@ -150,11 +147,11 @@ class PlanOrder extends CI_Controller {
             "color"=>"#4a4a4a"
           ),
             "keyword2"=>array(
-            "value"=>$rows->startTime,
+            "value"=>$time,
             "color"=>"#9b9b9b"
           ),
             "keyword3"=>array(
-            "value"=>$rows->carNum,
+            "value"=>$car,
             "color"=>"#9b9b9b"
           ),
             "keyword4"=>array(
@@ -162,7 +159,6 @@ class PlanOrder extends CI_Controller {
             "color"=>"#9b9b9b"
           )
         );
-      }
       return $value;
     }
 

@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/addPlan/add",
     "pages/addRepair/add",    
-    "pages/repair/repair"
+    "pages/repair/repair",
+    "pages/approval/approval"
   ],
   "window": {
     "backgroundTextStyle": "light",

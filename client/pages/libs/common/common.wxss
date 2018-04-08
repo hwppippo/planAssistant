@@ -220,6 +220,15 @@ image {
   height: 25px;
 }
 
+.cell-height-approval{
+  height: 25px;
+  background: #ddd
+}
+.cell-more-height{
+  height: 45px;
+}
+
+
 .vc {
   display: flex;
   align-items: center;
