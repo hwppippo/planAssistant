@@ -6,7 +6,7 @@
     <view class='card  b-shadow'>
       <template is="zan-dialog" data="{{ zanDialog }}"></template>
 
-      <view class='nearCard-fl' bindtap='toggleBtn' id="{{item.id}}" data-state="{{item.isStop}}">
+      <view class='nearCard-fl' bindtap='toggleBtn' id="{{item.id}}" data-state="{{item.isStop}}" data-info="{{item}}">
         <image src='../../imgs/car.png'></image>
       </view>
 
@@ -22,7 +22,7 @@
         </view>
       </view>
 
-      <view class=' section_book item_isStop?"red":"blue"' data-aid="{{item.id}}" data-openid="{{item.open_id}}" data-state="{{item.isStop}}">
+      <view class=' section_book {{item.isStop=="不同意"?"red":"blue"}}'>
         <text>{{item.isStop}}</text>
       </view>
     </view>
@@ -30,7 +30,8 @@
     <view class='down clearfix {{uhide==item.id?"":"hidden"}}'>
       <view class='ml30'>预约人：{{item.user}}</view>
       <view class='ml30'>出车时间：{{item.startTime}}</view>
-      <view class='ml30'>结束时间：{{item.realEndTime}}</view>
+      <view class='ml30'>结束时间：{{item.endTime}}</view>
+      <view class='ml30'>审批备注：{{item.approvalCommet==null?'没有备注':item.approvalCommet}}</view>
       <view class='ml30'>起始地点：{{item.location}}</view>
       <view class='feedBack'>详情</view>
     </view>

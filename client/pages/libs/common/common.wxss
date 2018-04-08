@@ -49,7 +49,6 @@
     font-size:28rpx;
     border-radius:100%;
     line-height: 80rpx;
-    color:#000;
     text-align: center;
     margin-top:50rpx;
     margin-right:20rpx;
@@ -60,10 +59,10 @@
   color:#fff;
 }
   
-.blue{
+ .blue{
   background:#79CDCD;
   color:#000;
-}  
+}   
 
 /* pages/myOrder/myOrder.wxss */
 

@@ -49,9 +49,10 @@ Page(Object.assign({}, Zan.Dialog, {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
       },
       success: function (res) {
-        console.log(res.data.data);
+        console.log(res.data);
         if (res.data.code != 0) {
           util.showError('没有预约');
+          return;
         }
         //设置车辆展示信息
         that.setData({
@@ -66,7 +67,7 @@ Page(Object.assign({}, Zan.Dialog, {
   toggleBtn: function (event) {
     var that = this;
     var itemId = event.currentTarget.id;
-    // console.log('当前信息:', event.currentTarget.dataset.info.open_id);
+    console.log('当前信息:', event.currentTarget.dataset.state);
     if (event.currentTarget.dataset.state == '待审批' && that.data.cauth != 0) {
       //进入审批页面
       wx.navigateTo({

@@ -3,7 +3,9 @@
 <import src="../libs/dist/switch/index.wxml" />
 
 <include src="../libs/picker_datetime/picker_datetime.wxml" />
-<form bindsubmit="formSubmit"  report-submit>
+
+<form bindsubmit="formSubmit" report-submit>
+  <template is="zan-dialog" data="{{ zanDialog }}"></template>
 
   <view class="zan-panel">
     <view class="zan-cell zan-cell--access cell-height" bindtap="selectPrjDialog">

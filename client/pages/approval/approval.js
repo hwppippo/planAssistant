@@ -83,7 +83,7 @@ Page(Object.assign({}, Zan.Select, {
       url: config.service.planStateUrl, //接口地址
       data: {
         id: this.data.id, state: result, open_id: this.data.openid, form_id: e.detail.formId, carNum: this.data.carNum,
-        time: this.data.startTime
+        time: this.data.startTime, approvalCommet: this.data.infoContent
       },
       method: 'Get',
       header: {

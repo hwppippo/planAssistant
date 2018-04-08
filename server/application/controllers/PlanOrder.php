@@ -32,7 +32,7 @@ class PlanOrder extends CI_Controller {
         //管理员权限，可以查看该公司所有信息
         $conditions = 'comName='.$cauth->comName;
       }
-      //var_dump($conditions);
+      // var_dump($conditions);
       $suffix = 'order by startTime desc';
       $operator = '';
       //条件为字符串
@@ -121,10 +121,11 @@ class PlanOrder extends CI_Controller {
       $form_id=$_GET['form_id'];
       $car=$_GET['carNum'];
       $time=$_GET['time'];
+      $approval_commet=$_GET['approvalCommet'];
       
       $conditions = 'id='.$id;
       //条件为字符串
-      $rows = DB::update('car_planOrder', ['isStop' =>$state, 'realEndTime'=>$this->now_time()], $conditions);
+      $rows = DB::update('car_planOrder', ['isStop' =>$state, 'approvalCommet'=>$approval_commet=='undefined'?'没有备注':$approval_commet], $conditions);
        $this->json([
           'code' => 0,
           'data' => $rows
@@ -197,7 +198,7 @@ class PlanOrder extends CI_Controller {
       $dd['form_id']=$form_id;      
       $dd['data']=$value;  
       $dd['color']='';               //模板内容字体的颜色，不填默认黑色
-      $dd['emphasis_keyword']='';    //模板需要放大的关键词，不填则默认无放大 
+      $dd['emphasis_keyword']='keyword4.DATA';    //模板需要放大的关键词，不填则默认无放大 
       $result = $this->https_curl_json($url,$dd,'json');
       if($result){
         echo json_encode(array('state'=>5,'msg'=>$result));
