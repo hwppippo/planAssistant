@@ -28,9 +28,9 @@
   margin-right: 5px;
 }
 
-.zan-cell__bd {
+ .zan-cell__bd {
   flex: 1;
-}
+} 
 
 .zan-cell__text {
   line-height: 24px;

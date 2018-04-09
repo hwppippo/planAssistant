@@ -11,11 +11,15 @@
       </view>
 
       <view class='nearCard-fm' bindtap='toggleBtn' id="{{item.id}}" data-state="{{item.isStop}}" data-info="{{item}}">
-        <view>日期：
+
+        <view>日 期：
           <text class='c-green'>{{item.startTime}}</text>
         </view>
-        <view>车型：
+        <view>车 型：
           <text class='c-green'>{{item.carNum}}</text>
+        </view>
+        <view>预约人：
+          <text class='c-green'>{{item.user}}</text>
         </view>
         <view>目的地：
           <text class='c-green'>{{item.destPlace}}</text>
@@ -28,7 +32,7 @@
     </view>
 
     <view class='down clearfix {{uhide==item.id?"":"hidden"}}'>
-      <view class='ml30'>预约人：{{item.user}}</view>
+       <view class='ml30'>出车事由：{{item.commet==null?'':item.commet}}</view> 
       <view class='ml30'>出车时间：{{item.startTime}}</view>
       <view class='ml30'>结束时间：{{item.endTime}}</view>
       <view class='ml30'>审批备注：{{item.approvalCommet==null?'没有备注':item.approvalCommet}}</view>

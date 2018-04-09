@@ -75,7 +75,6 @@ Page(Object.assign({}, Zan.Dialog, {
         + '&carNum=' + event.currentTarget.dataset.info.carNum
         + '&startTime=' + event.currentTarget.dataset.info.startTime
         + '&endTime=' + event.currentTarget.dataset.info.endTime
-        + '&comment=' + event.currentTarget.dataset.info.comment
         + '&destPlace=' + event.currentTarget.dataset.info.destPlace
         + '&id=' + event.currentTarget.dataset.info.id
         + '&openid=' + event.currentTarget.dataset.info.open_id

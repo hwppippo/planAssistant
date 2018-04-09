@@ -1,12 +1,13 @@
 var pickerFile = require('../libs/picker_datetime/picker_datetime.js');
 var qcloud = require('../../vendor/wafer2-client-sdk/index')
 var util = require('../../utils/util.js');
-var config = require('../../utils/config.js')
+const config = require('../../utils/config.js')
 
 const Zan = require('../libs/dist/index');
 
-Page(Object.assign({}, Zan.Dialog, {
+Page(Object.assign({}, Zan.Dialog, Zan.Field, {
   data: {
+    config,
     userInfo: {},
     logged: false,
     takeSession: false,
@@ -20,14 +21,13 @@ Page(Object.assign({}, Zan.Dialog, {
     endDate: '',
     prjType: '',
     carType: '',
-    placeContent:''
   },
 
   onLoad: function () {
     this.datetimePicker = new pickerFile.pickerDatetime({
       page: this,
       animation: 'slide',
-      duration: 500
+      duration: 100
     });
     var that = this;
     wx.getUserInfo({
@@ -45,23 +45,11 @@ Page(Object.assign({}, Zan.Dialog, {
     this.datetimePicker.setPicker('endDate');
   },
 
-  commetContent: function (e) {
-    this.setData({
-      commetContent: e.detail.value
-    })
-  },
-
-  placeContent: function (e) {
-    this.setData({
-      placeContent: e.detail.value
-    })
-  },
-
   clearInput() {
     this.data.placeContent = ''
     this.setData({
-      commetValue: '',
-      placeValue: '',
+      commet: '',
+      dest: '',
       startDate: '',
       endDate: '',
       prjType: '',
@@ -115,12 +103,15 @@ Page(Object.assign({}, Zan.Dialog, {
 
   formSubmit: function (e) {
     console.log(e.detail.formId);
+    console.log('value:', e.detail.value);
+
     console.log('项目部', this.data.prjType);
     console.log('车辆', this.data.carType);
     console.log('时间值', this.data.startDate);
     console.log('时间值', this.data.endDate);
     console.log('人员', this.data.people);
-    console.log('目的地', this.data.placeContent);
+    console.log('出车事由', e.detail.value.commet);
+    console.log('目的地', e.detail.value.dest);
     console.log('当前位置', config.address);
     var openId = wx.getStorageSync('openId');
     console.log(openId);
@@ -131,7 +122,7 @@ Page(Object.assign({}, Zan.Dialog, {
       util.showError('车辆不能为空')
     } else if (this.data.startDate == '' || this.data.endDate == '') {
       util.showError('时间不能为空')
-    } else if (this.data.placeContent == '') {
+    } else if (e.detail.value.destPlace == '') {
       util.showError('目的地不能为空')
     } else {
       wx.request({
@@ -141,8 +132,8 @@ Page(Object.assign({}, Zan.Dialog, {
           open_id: openId,
           startTime: this.data.startDate, endTime:
           this.data.endDate, user: this.data.people,
-          commet: this.data.commet,
-          location: config.address, destPlace: this.data.placeContent,
+          commet: e.detail.value.commet,
+          location: config.address, destPlace: e.detail.value.dest,
           form_id: e.detail.formId,
         },
         method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
@@ -151,7 +142,10 @@ Page(Object.assign({}, Zan.Dialog, {
         }, // 设置请求的 header
         success: function (res) {
           console.log(res);
-          util.showSuccess('添加成功')
+          util.showSuccess('添加成功');
+          wx.switchTab({
+            url: '../index/index',
+          })
         },
         fail: function (res) {
           console.log(res);

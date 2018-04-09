@@ -357,10 +357,10 @@
   position: relative;
   padding: 12px 15px;
   display: flex;
-  align-items: center;
+   align-items: center; 
   line-height: 1.4;
   font-size: 14px;
-  z-index: 1
+  z-index: 1;
 }
 
 .zan-cell::after {

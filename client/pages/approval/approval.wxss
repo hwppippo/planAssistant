@@ -12,7 +12,9 @@
 /**垂直居中**/
 
 
-
+.cell-height-approval {
+  height: 40px;
+}
 
 .item-name {
   flex: 1;
@@ -26,3 +28,6 @@
   font-size: 15px;
 }
 
+.view_hide {
+  display: none;
+}

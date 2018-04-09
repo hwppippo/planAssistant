@@ -5,7 +5,7 @@ var config = require('../../utils/config.js')
 const Zan = require('../libs/dist/index');
 
 
-Page(Object.assign({}, Zan.Select, {
+Page(Object.assign({}, Zan.Select, Zan.Field, {
   data: {
     items: [
       {
@@ -28,7 +28,8 @@ Page(Object.assign({}, Zan.Select, {
 
     activeColor: '#4b0',
     id: '',
-    openid: ''
+    openid: '',
+    showView: false,
   },
 
   onLoad: function (options) {
@@ -40,8 +41,10 @@ Page(Object.assign({}, Zan.Select, {
       startTime: options.startTime,
       endTime: options.endTime,
       destPlace: options.destPlace,
-      commet: options.comment
     })
+
+    showView: (this.data.showView == "true" ? true : false)
+
   },
 
   infoContent: function (e) {
@@ -54,15 +57,27 @@ Page(Object.assign({}, Zan.Select, {
     this.setData({
       [`checked.${componentId}`]: value
     });
+
+    if (value == 2) {
+      this.setData({
+        showView: true
+      })
+    } else {
+      this.setData({
+        showView: false,
+      })
+    }
   },
 
   formSubmit: function (e) {
-    console.log(e.detail.formId);
+    console.log('info', e.detail.value);
+    console.log('form_id', e.detail.formId);
     console.log('项目部', this.data.prj);
     console.log('车辆', this.data.carNum);
     console.log('时间值', this.data.startTime);
     console.log('时间值', this.data.endTime);
     console.log('目的地', this.data.destPlace);
+    console.log('备注', e.detail.value.commet);
     console.log('审批结果', e.detail.value.result);
 
     var result = '';
@@ -83,7 +98,7 @@ Page(Object.assign({}, Zan.Select, {
       url: config.service.planStateUrl, //接口地址
       data: {
         id: this.data.id, state: result, open_id: this.data.openid, form_id: e.detail.formId, carNum: this.data.carNum,
-        time: this.data.startTime, approvalCommet: this.data.infoContent
+        time: this.data.startTime, approvalCommet: e.detail.value.commet
       },
       method: 'Get',
       header: {
@@ -91,6 +106,10 @@ Page(Object.assign({}, Zan.Select, {
       },
       success: function (res) {
         console.log(res.data)
+        util.showSuccess('审批成功');
+        wx.switchTab({
+          url: '../index/index',
+        })
       }
     })
   }

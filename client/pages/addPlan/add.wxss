@@ -1,26 +1,3 @@
 /**index.wxss**/
 @import "../libs/common/common.wxss";
 
-.page-item {
-  margin: 0 30rpx;
-  padding: 40rpx 0;
-  border-bottom: 1px #ccc solid;
-  display: flex;
-  flex-direction: row;
-}
-
-/**垂直居中**/
-
-
-.item-name {
-  flex: 1;
-  color: #333;
-  font-size: 15px;
-  margin-left: 20rpx;
-}
-
-.field-item-val {
-  flex: 3;
-  font-size: 15px;
-}
-

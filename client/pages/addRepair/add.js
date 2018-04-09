@@ -16,9 +16,6 @@ Page(Object.assign({}, Zan.Dialog, {
     requestResult: '',
     people: '',
     invoice_photo: '',
-    commetValue: '',
-    deductValue: '',
-    costContent: '',
     startDate: '',
     costType: '',
     prjType: '',
@@ -185,32 +182,12 @@ Page(Object.assign({}, Zan.Dialog, {
     })
   },
 
-  //违章扣分
-  deductContent: function (e) {
-    this.setData({
-      deductContent: e.detail.value
-    })
-  },
-
-  costContent: function (e) {
-    this.setData({
-      costContent: e.detail.value
-    })
-  },
-
-  commentContent: function (e) {
-    this.setData({
-      commentContent: e.detail.value
-    })
-  },
-
   clearInput() {
     this.data.placeContent = ''
     this.setData({
-      commentContent: '',
-      costValue:'',
-      deductContent: '',
-      costContent: '',
+      commet: '',
+      cost:'',
+      deduct: '',
       startDate: '',
       costType: '',
       prjType: '',
@@ -225,9 +202,8 @@ Page(Object.assign({}, Zan.Dialog, {
     console.log('车辆', this.data.carType);
     console.log('缴费类型', this.data.costType);
     console.log('缴费时间', this.data.startDate);
-    // console.log('缴费单位', this.data.repair_factoryContent);
-    console.log('费用', this.data.costContent);
-    console.log('扣分', this.data.deductContent);
+    console.log('费用', e.detail.value.cost);
+    console.log('扣分', e.detail.value.deduct);
     console.log('文件名', this.data.invoice_photo)
 
     console.log('当前位置', config.address);
@@ -250,11 +226,11 @@ Page(Object.assign({}, Zan.Dialog, {
           open_id: openId,
           repair_type: this.data.costType,
           repair_time: this.data.startDate,
-          repair_cost: this.data.costContent,
+          repair_cost: e.detail.value.cost,
           invoice: this.data.invoice_photo,
-          deduct: this.data.deductContent,
+          deduct: e.detail.value.deduct,
           repair_location: config.address,
-          commet: this.data.commentContent
+          commet: e.detail.value.commet
         },
         method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
         header: {
@@ -264,6 +240,9 @@ Page(Object.assign({}, Zan.Dialog, {
           console.log(res);
           if (res.data.code == 0) {
             util.showSuccess('添加成功');
+            wx.switchTab({
+              url: '../repair/repair',
+            })
           }
         },
         fail: function (res) {

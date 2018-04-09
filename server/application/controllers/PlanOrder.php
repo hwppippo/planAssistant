@@ -86,14 +86,32 @@ class PlanOrder extends CI_Controller {
       ]);
     if($res){
         $this->json([
-            'code' => 0,
-            'data' => [
-                'msg' => '添加成功'
-            ]
+          'code' => 0,
+          'data' => [
+              'msg' => '添加成功'
+          ]
         ]);
+        
+        //把自己提交的 form_id 添加到数据库
+        $res = DB::insert('user_formId', [
+        'open_id' => $arr['open_id'],
+        'form_id' => $arr['form_id'],
+        'update_time'=>time()
+      ]);
 
         //发送审批模板消息,待审批状态
-        $this->send_msg($this->encode_approval_pending($arr), 'ozOZn5BVte1lhCndcpAaKPPZnEn4', $arr['form_id']);
+        //先查询openid 对应的 formid
+        $conditions = 'open_id="ozOZn5BVte1lhCndcpAaKPPZnEn4"';
+        //先查询该 openid 的权限
+         $suffix = 'order by update_time desc';
+        $operator = '';
+        $rows = DB::row('user_formId', ['*'], $conditions, $operator, $suffix);
+        
+        if($rows != null){
+          $this->send_msg($this->encode_approval_pending($arr), 'ozOZn5BVte1lhCndcpAaKPPZnEn4', $rows->form_id);
+          //删掉该条记录
+          DB::delete('user_formId', 'id = '.$rows->id);
+        }
       }else{
         $this->json([
             'code' => -1,
@@ -123,20 +141,39 @@ class PlanOrder extends CI_Controller {
       $time=$_GET['time'];
       $approval_commet=$_GET['approvalCommet'];
       
+      var_dump($form_id);
       $conditions = 'id='.$id;
       //条件为字符串
       $rows = DB::update('car_planOrder', ['isStop' =>$state, 'approvalCommet'=>$approval_commet=='undefined'?'没有备注':$approval_commet], $conditions);
-       $this->json([
+      if($rows){
+        $this->json([
           'code' => 0,
           'data' => $rows
         ]);
-      //发送模板消息
-      if($state=='完成')
-        return;
 
-      //发送审批模板消息,审批完状态
-      $this->send_msg($this->encode_approval_complete($id, $state, $car, $time), $open_id, $form_id);
+       $res = DB::insert('user_formId', [
+        'open_id' => 'ozOZn5BVte1lhCndcpAaKPPZnEn4',
+        'form_id' => $form_id,
+        'update_time'=>time()
+        ]);
+      if($res){
+        //发送模板消息
+        if($state=='完成')
+          return;
 
+          //先查询openid 对应的 formid
+          $conditions = 'open_id='.'"'.$open_id.'"';
+          $suffix = 'order by update_time desc';
+          $operator = '';
+          $rows = DB::row('user_formId', ['*'], $conditions, $operator, $suffix);
+          if($rows){
+            //发送审批模板消息,审批完状态
+            $this->send_msg($this->encode_approval_complete($id, $state, $car, $time), $open_id, $rows->form_id);
+            //删掉该条记录
+            DB::delete('user_formId', 'id = '.$rows->id);
+          }
+        }
+      }
     }
   public function encode_approval_complete($id, $state, $car, $time){
       //先检测 Token
@@ -195,7 +232,7 @@ class PlanOrder extends CI_Controller {
       $dd['touser']= $openid;
       $dd['template_id']='VPa-msQhPF0ldKatdNU2gkEvvwzxdHAo4vcPrOjv-Lg';
       $dd['page']='pages/index/index';  //点击模板卡片后的跳转页面，仅限本小程序内的页面。支持带参数,该字段不填则模板无跳转。
-      $dd['form_id']=$form_id;      
+      $dd['form_id']=$form_id;
       $dd['data']=$value;  
       $dd['color']='';               //模板内容字体的颜色，不填默认黑色
       $dd['emphasis_keyword']='keyword4.DATA';    //模板需要放大的关键词，不填则默认无放大 

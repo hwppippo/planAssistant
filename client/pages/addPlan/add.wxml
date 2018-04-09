@@ -1,6 +1,8 @@
 <!--index.wxml-->
 <import src="../libs/dist/dialog/index.wxml" />
 <import src="../libs/dist/switch/index.wxml" />
+<import src="../libs/dist/field/index.wxml" />
+
 
 <include src="../libs/picker_datetime/picker_datetime.wxml" />
 
@@ -12,32 +14,33 @@
       <view class="vc">
         <image src="../../imgs/prj.png" mode="scaleToFill" class="p-icon" />
       </view>
-      <view class="zan-cell__bd zan-font-15">项目选择</view>
-      <view class="zan-cell__bd zan-font-15">{{prjType}}</view>
+      <view class="field-item-label zan-font-15">项目选择</view>
+      <view class="field-item-val zan-font-15">{{prjType}}</view>
       <view class="zan-cell__ft"></view>
+
     </view>
     <view class="zan-cell zan-cell--access cell-height" bindtap="selectCarDialog">
       <view class="vc">
         <image src="../../imgs/carNum.png" mode="scaleToFill" class="p-icon" />
       </view>
-      <view class="zan-cell__bd zan-font-15">车辆选择</view>
-      <view class="zan-cell__bd zan-font-15">{{carType}}</view>
+      <view class="field-item-label zan-font-15">车辆选择</view>
+      <view class="field-item-val zan-font-15">{{carType}}</view>
       <view class="zan-cell__ft"></view>
     </view>
     <view class="zan-cell zan-cell--access cell-height" bindtap="startTime">
       <view class="vc">
         <image src="../../imgs/time.png" mode="scaleToFill" class="p-icon" />
       </view>
-      <view class="zan-cell__bd zan-font-15">出车时间</view>
-      <view class="zan-cell__bd zan-font-15 ">{{startDate}}</view>
+      <view class="field-item-label zan-font-15">出车时间</view>
+      <view class="field-item-val zan-font-15 ">{{startDate}}</view>
       <view class="zan-cell__ft"></view>
     </view>
     <view class="zan-cell zan-cell--access cell-height" bindtap="endTime">
       <view class="vc">
         <image src="../../imgs/time.png" mode="scaleToFill" class="p-icon" />
       </view>
-      <view class="zan-cell__bd zan-font-15">结束时间</view>
-      <view class="zan-cell__bd zan-font-15 ">{{endDate}}</view>
+      <view class="field-item-label zan-font-15">结束时间</view>
+      <view class="field-item-val zan-font-15 ">{{endDate}}</view>
       <view class="zan-cell__ft"></view>
     </view>
 
@@ -45,15 +48,19 @@
       <view class="vc">
         <image src="../../imgs/commet.png" mode="scaleToFill" class="p-icon" />
       </view>
-      <view class="zan-cell__bd zan-font-15">出车事由</view>
-      <input name="commet" bindinput="commetContent" value="{{commetValue}}" />
+      <view class="field-item-label zan-font-15">出车事由</view>
+      <view class="field-item-val">
+        <input name="commet" value="{{commet}}" placeholder="请输入出车事项" />
+      </view>
     </view>
     <view class="zan-cell cell-height">
       <view class="vc">
         <image src="../../imgs/dest.png" mode="scaleToFill" class="p-icon" />
       </view>
-      <view class="zan-cell__bd zan-font-15">目的地</view>
-      <input name="destPlace" bindinput="placeContent" value="{{placeValue}}" />
+      <view class="field-item-label zan-font-15">目的地</view>
+      <view class="field-item-val">
+        <input name="dest" value="{{dest}}" placeholder="请输入行程目的地" />
+      </view>
     </view>
 
   </view>
