@@ -1,17 +1,13 @@
-<import src="../libs/dist/dialog/index.wxml" />
-
 <view class='container'>
   <!-- 订单列表 -->
   <block wx:for-items="{{carInfoData}}">
     <view class='card  b-shadow'>
-      <template is="zan-dialog" data="{{ zanDialog }}"></template>
 
       <view class='nearCard-fl' bindtap='toggleBtn' id="{{item.id}}" data-state="{{item.isStop}}" data-info="{{item}}">
         <image src='../../imgs/car.png'></image>
       </view>
 
       <view class='nearCard-fm' bindtap='toggleBtn' id="{{item.id}}" data-state="{{item.isStop}}" data-info="{{item}}">
-
         <view>日 期：
           <text class='c-green'>{{item.startTime}}</text>
         </view>

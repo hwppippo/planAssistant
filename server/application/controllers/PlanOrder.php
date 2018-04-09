@@ -108,7 +108,7 @@ class PlanOrder extends CI_Controller {
         $rows = DB::row('user_formId', ['*'], $conditions, $operator, $suffix);
         
         if($rows != null){
-          $this->send_msg($this->encode_approval_pending($arr), 'ozOZn5BVte1lhCndcpAaKPPZnEn4', $rows->form_id);
+          $this->send_msg($this->encode_approval_pending($arr), 'ozOZn5BVte1lhCndcpAaKPPZnEn4', 'FwwnBSSb-hmR54gSD_UOs9rGNUkUHanDUCgfyjuGwDg', $rows->form_id);
           //删掉该条记录
           DB::delete('user_formId', 'id = '.$rows->id);
         }
@@ -168,7 +168,7 @@ class PlanOrder extends CI_Controller {
           $rows = DB::row('user_formId', ['*'], $conditions, $operator, $suffix);
           if($rows){
             //发送审批模板消息,审批完状态
-            $this->send_msg($this->encode_approval_complete($id, $state, $car, $time), $open_id, $rows->form_id);
+            $this->send_msg($this->encode_approval_complete($id, $state, $car, $time), $open_id, 'VPa-msQhPF0ldKatdNU2gkEvvwzxdHAo4vcPrOjv-Lg', $rows->form_id);
             //删掉该条记录
             DB::delete('user_formId', 'id = '.$rows->id);
           }
@@ -226,11 +226,11 @@ class PlanOrder extends CI_Controller {
       return $value;
     }
     
-    public function send_msg($value, $openid, $form_id){
+    public function send_msg($value, $openid, $template_id, $form_id){
       $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$this->access_token;
       $dd = array();
       $dd['touser']= $openid;
-      $dd['template_id']='VPa-msQhPF0ldKatdNU2gkEvvwzxdHAo4vcPrOjv-Lg';
+      $dd['template_id']=$template_id;
       $dd['page']='pages/index/index';  //点击模板卡片后的跳转页面，仅限本小程序内的页面。支持带参数,该字段不填则模板无跳转。
       $dd['form_id']=$form_id;
       $dd['data']=$value;  
