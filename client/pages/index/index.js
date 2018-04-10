@@ -27,9 +27,23 @@ Page(Object.assign({}, Zan.Dialog, {
   onShow: function () {
     console.log('page onshow');
     //这里更新数据setData
-    this.data.openId = wx.getStorageSync('openId');
-    if (this.data.openId.length > 0) {
-      this.getInfo(this.data.openId);
+    //先读取缓存
+    try {
+      var value = wx.getStorageSync('orderlist');
+      if (value) {
+        // Do something with return value
+        this.setData({
+          carInfoData: value.data,
+          cauth: value.cauth,
+        })
+      } else {
+        this.data.openId = wx.getStorageSync('openId');
+        if (this.data.openId.length > 0) {
+          this.getInfo(this.data.openId);
+        }
+      }
+    } catch (e) {
+      // Do something when catch error
     }
   },
 
@@ -53,6 +67,12 @@ Page(Object.assign({}, Zan.Dialog, {
         if (res.data.code != 0) {
           util.showError('没有预约');
           return;
+        }
+        //设置缓存
+        try {
+          wx.setStorageSync('orderlist', res.data);
+        } catch (e) {
+          util.showError('缓存失败');
         }
         //设置车辆展示信息
         that.setData({
