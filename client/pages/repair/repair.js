@@ -22,23 +22,10 @@ Page({
 
   onShow: function () {
     console.log('page onshow');
-    //先读取缓存
-    try {
-      var value = wx.getStorageSync('costlist');
-      if (value) {
-        // Do something with return value
-        this.setData({
-          carInfoData: value
-        })
-      } else {
-        //这里更新数据setData
-        this.data.openId = wx.getStorageSync('openId');
-        this.getInfo(this.data.openId);
-      }
-    } catch (e) {
-      // Do something when catch error
-    }
-  },
+    //这里更新数据setData
+    this.data.openId = wx.getStorageSync('openId');
+    this.getInfo(this.data.openId);
+},
 
   newRepair: function () {
     wx.navigateTo({
@@ -69,12 +56,6 @@ Page({
         console.log(res.data);
         if (res.data.code != 0) {
           util.showError('没有缴费');
-        }
-        //设置缓存
-        try {
-          wx.setStorageSync('costlist', res.data.data);
-        } catch (e) {
-          util.showError('缓存失败');
         }
         //设置车辆展示信息
         that.setData({

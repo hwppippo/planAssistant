@@ -122,6 +122,8 @@ Page(Object.assign({}, Zan.Dialog, Zan.Field, {
       util.showError('车辆不能为空')
     } else if (this.data.startDate == '' || this.data.endDate == '') {
       util.showError('时间不能为空')
+    } else if (e.detail.value.commet == '') {
+      util.showError('出车事由不能为空')
     } else if (e.detail.value.destPlace == '') {
       util.showError('目的地不能为空')
     } else {

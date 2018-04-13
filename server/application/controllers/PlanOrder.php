@@ -108,7 +108,7 @@ class PlanOrder extends CI_Controller {
         $rows = DB::row('user_formId', ['*'], $conditions, $operator, $suffix);
         
         if($rows != null){
-          $this->send_msg($this->encode_approval_pending($arr), 'ozOZn5BVte1lhCndcpAaKPPZnEn4', 'FwwnBSSb-hmR54gSD_UOs9rGNUkUHanDUCgfyjuGwDg', $rows->form_id);
+          $this->send_msg($this->encode_approval_pending($arr), 'ozOZn5NAoE9iHBIEqrRudgdnxMyE', 'FwwnBSSb-hmR54gSD_UOs9rGNUkUHanDUCgfyjuGwDg', $rows->form_id,'keyword4.DATA');
           //删掉该条记录
           DB::delete('user_formId', 'id = '.$rows->id);
         }
@@ -168,7 +168,7 @@ class PlanOrder extends CI_Controller {
           $rows = DB::row('user_formId', ['*'], $conditions, $operator, $suffix);
           if($rows){
             //发送审批模板消息,审批完状态
-            $this->send_msg($this->encode_approval_complete($id, $state, $car, $time), $open_id, 'VPa-msQhPF0ldKatdNU2gkEvvwzxdHAo4vcPrOjv-Lg', $rows->form_id);
+            $this->send_msg($this->encode_approval_complete($id, $state, $car, $time), $open_id, 'VPa-msQhPF0ldKatdNU2gmCyntRezGWZcpKOH3V0Pnc', $rows->form_id,'keyword3.DATA');
             //删掉该条记录
             DB::delete('user_formId', 'id = '.$rows->id);
           }
@@ -181,18 +181,14 @@ class PlanOrder extends CI_Controller {
         //拼接模块
         $value = array(
             "keyword1"=>array(
-            "value"=>$this->now_time(),
-            "color"=>"#4a4a4a"
-          ),
-            "keyword2"=>array(
             "value"=>$time,
             "color"=>"#9b9b9b"
           ),
-            "keyword3"=>array(
+            "keyword2"=>array(
             "value"=>$car,
             "color"=>"#9b9b9b"
           ),
-            "keyword4"=>array(
+            "keyword3"=>array(
             "value"=>$state,
             "color"=>"#9b9b9b"
           )
@@ -206,27 +202,27 @@ class PlanOrder extends CI_Controller {
       //拼接模块
       $value = array(
           "keyword1"=>array(
-          "value"=>$this->now_time(),
-          "color"=>"#4a4a4a"
-        ),
-          "keyword2"=>array(
           "value"=>$arr['startTime'],
           "color"=>"#9b9b9b"
         ),
-          "keyword3"=>array(
+          "keyword2"=>array(
           "value"=>$arr['carNum'],
           "color"=>"#9b9b9b"
         ),
-          "keyword4"=>array(
-          "value"=>'待审批',
+          "keyword3"=>array(
+          "value"=>$arr['destPlace'],
           "color"=>"#9b9b9b"
+        ),
+          "keyword4"=>array(
+          "value"=>$arr['commet'],
+          "color"=>"#4a4a4a"
         )
       );
 
       return $value;
     }
     
-    public function send_msg($value, $openid, $template_id, $form_id){
+    public function send_msg($value, $openid, $template_id, $form_id, $keyword){
       $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$this->access_token;
       $dd = array();
       $dd['touser']= $openid;
@@ -235,7 +231,7 @@ class PlanOrder extends CI_Controller {
       $dd['form_id']=$form_id;
       $dd['data']=$value;  
       $dd['color']='';               //模板内容字体的颜色，不填默认黑色
-      $dd['emphasis_keyword']='keyword4.DATA';    //模板需要放大的关键词，不填则默认无放大 
+      $dd['emphasis_keyword']=$keyword;    //模板需要放大的关键词，不填则默认无放大 
       $result = $this->https_curl_json($url,$dd,'json');
       if($result){
         echo json_encode(array('state'=>5,'msg'=>$result));
