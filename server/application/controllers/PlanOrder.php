@@ -101,11 +101,11 @@ class PlanOrder extends CI_Controller {
 
         //发送审批模板消息,待审批状态
         //先查询openid 对应的 formid
-        $conditions = 'open_id="ozOZn5BVte1lhCndcpAaKPPZnEn4"';
+        $conditions = 'open_id="ozOZn5NAoE9iHBIEqrRudgdnxMyE"';
         $rows = DB::row('user_formId', ['*'], $conditions);
         
         if($rows != null){
-          $this->send_msg($this->encode_approval_pending($arr), 'ozOZn5BVte1lhCndcpAaKPPZnEn4', 'FwwnBSSb-hmR54gSD_UOs9rGNUkUHanDUCgfyjuGwDg', $rows->form_id,'keyword4.DATA');
+          $this->send_msg($this->encode_approval_pending($arr), 'ozOZn5NAoE9iHBIEqrRudgdnxMyE', 'FwwnBSSb-hmR54gSD_UOs9rGNUkUHanDUCgfyjuGwDg', $rows->form_id,'keyword4.DATA');
           //删掉该条记录
           DB::delete('user_formId', 'id = '.$rows->id);
         }else{
@@ -177,7 +177,7 @@ class PlanOrder extends CI_Controller {
         ]);
 
        $res = DB::insert('user_formId', [
-        'open_id' => 'ozOZn5BVte1lhCndcpAaKPPZnEn4',
+        'open_id' => $open_id,
         'form_id' => $form_id,
         'update_time'=>time()
         ]);

@@ -22,7 +22,16 @@ Page(extend({}, Tab, {
     },
     openId: '',
     cauth: 0,//默认权限
-    allDatas: []
+    allDatas: [],
+
+    // 触摸开始时间
+    touchStartTime: 0,
+    // 触摸结束时间
+    touchEndTime: 0,
+    // 最后一次单击事件点击发生时间
+    lastTapTime: 0,
+    // 单击事件点击后要触发的函数
+    lastTapTimeoutFunc: null,
   },
 
   /**
@@ -75,15 +84,6 @@ Page(extend({}, Tab, {
       [`${componentId}.selectedId`]: selectedId
     });
   },
-
-  // 触摸开始时间
-  touchStartTime: 0,
-  // 触摸结束时间
-  touchEndTime: 0,
-  // 最后一次单击事件点击发生时间
-  lastTapTime: 0,
-  // 单击事件点击后要触发的函数
-  lastTapTimeoutFunc: null,
 
   /// 按钮触摸开始触发的事件
   touchStart: function (e) {

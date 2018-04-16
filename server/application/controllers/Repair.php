@@ -106,7 +106,7 @@ class Repair extends CI_Controller {
       if($rows){
         $this->json([
           'code' => 0,
-          'data' => $rows
+          'data' => $rows 
         ]);
       }else{
         $this->json([
