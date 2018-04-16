@@ -7,7 +7,7 @@
         <image src='../../imgs/car.png'></image>
       </view>
 
-      <view class='nearCard-fm' bindtap='toggleBtn' id="{{item.id}}">
+      <view class='nearCard-fm' bindtap='toggleBtn' id="{{item.id}}" bindlongtap="longTap" bindtouchstart="touchStart" bindtouchend="touchEnd">
         <view>时间：
           <text class='c-green'>{{item.repair_time}}</text>
         </view>

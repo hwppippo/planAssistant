@@ -1,9 +1,9 @@
-var pickerFile = require('../libs/picker_datetime/picker_datetime.js');
+var pickerFile = require('../../libs/picker_datetime/picker_datetime.js');
 var qcloud = require('../../vendor/wafer2-client-sdk/index')
 var util = require('../../utils/util.js');
 const config = require('../../utils/config.js')
 
-const Zan = require('../libs/dist/index');
+const Zan = require('../../libs/dist/index');
 
 Page(Object.assign({}, Zan.Dialog, Zan.Field, {
   data: {

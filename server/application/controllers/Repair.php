@@ -66,7 +66,8 @@ class Repair extends CI_Controller {
           'open_id' => $arr['open_id'],
         ]);
       }
-
+      if($arr['deduct']=='')
+        $arr['deduct'] = 0;
       $res = DB::insert('car_repair', [
           'comName'=>$comName,
           'open_id' => $arr['open_id'],
@@ -96,20 +97,24 @@ class Repair extends CI_Controller {
         }
       }
 
-      public function state() {
-        $id=$_GET['id'];
-        if($id==null){
-          $this->json([
-              'code' => -1,
-              'data' => ''
-          ]);
-        }
-        $conditions = 'id='.$id;
-        //条件为字符串
-        $rows = DB::update('car_planOrder', ['isStop' =>1, 'realEndTime'=>time()], $conditions);
+      public function del() {
+      $id=$_GET['id'];
+      
+      $conditions = 'id='.$id;
+      //条件为字符串
+      $rows = DB::delete('car_repair', $conditions);
+      if($rows){
         $this->json([
-            'code' => 0,
-            'data' => $rows
-          ]);
+          'code' => 0,
+          'data' => $rows
+        ]);
+      }else{
+        $this->json([
+          'code' => -1,
+          'data' => [
+              'msg' => '删除失败'
+          ]
+        ]);
       }
+    }
 }

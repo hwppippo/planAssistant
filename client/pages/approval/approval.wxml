@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<import src="../libs/dist/select/index.wxml" />
+<import src="../../libs/dist/select/index.wxml" />
 
 <view class="zan-panel">
   <view class="zan-cell zan-cell--access cell-height">
@@ -56,7 +56,7 @@
       </view>
       <view class="field-item-label zan-font-15">备注</view>
       <view class="field-item-val">
-        <input name="commet" value="{{commet}}" placeholder="请输入不同意的理由" />
+        <input name="approvalCommet" value="{{approvalCommet}}" placeholder="请输入不同意的理由" />
       </view>
     </view>
     <view>

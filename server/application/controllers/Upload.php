@@ -22,8 +22,8 @@ class Upload extends CI_Controller {
             return;
         }
         
-        // 限制文件大小：5M 以内
-        if ($file['size'] > 5 * 1024 * 1024) {
+        // 限制文件大小：10M 以内
+        if ($file['size'] > 10 * 1024 * 1024) {
             $this->json([
                 'code' => 1,
                 'data' => '上传图片过大，仅支持 5M 以内的图片上传'

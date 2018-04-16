@@ -1,4 +1,4 @@
-@import "../libs/common/common.wxss";
+@import "../../libs/common/common.wxss";
 
 page {
   min-height: 100%;

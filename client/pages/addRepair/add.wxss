@@ -1,5 +1,5 @@
 /**index.wxss**/
-@import "../libs/common/common.wxss";
+@import "../../libs/common/common.wxss";
 
 .image_info {
   margin-top: 20rpx;

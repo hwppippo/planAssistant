@@ -1,13 +1,17 @@
+<import src="../../libs/dist/tab/index.wxml" />
+
 <view class='container'>
+<template is="zan-tab" data="{{ ...tab1, componentId: 'tab1' }}"></template>
+
   <!-- 订单列表 -->
-  <block wx:for-items="{{carInfoData}}">
+   <block wx:for-items="{{carInfoData}}">
     <view class='card  b-shadow'>
 
       <view class='nearCard-fl' bindtap='toggleBtn' id="{{item.id}}" data-state="{{item.isStop}}" data-info="{{item}}">
         <image src='../../imgs/car.png'></image>
       </view>
 
-      <view class='nearCard-fm' bindtap='toggleBtn' id="{{item.id}}" data-state="{{item.isStop}}" data-info="{{item}}">
+      <view class='nearCard-fm' bindtap='toggleBtn' id="{{item.id}}" data-state="{{item.isStop}}" data-info="{{item}}" bindlongtap="longTap" bindtouchstart="touchStart" bindtouchend="touchEnd">
         <view>日 期：
           <text class='c-green'>{{item.startTime}}</text>
         </view>
@@ -28,7 +32,7 @@
     </view>
 
     <view class='down clearfix {{uhide==item.id?"":"hidden"}}'>
-       <view class='ml30'>出车事由：{{item.commet==null?'':item.commet}}</view> 
+      <view class='ml30'>出车事由：{{item.commet==null?'':item.commet}}</view>
       <view class='ml30'>出车时间：{{item.startTime}}</view>
       <view class='ml30'>结束时间：{{item.endTime}}</view>
       <view class='ml30'>审批备注：{{item.approvalCommet==null?'没有备注':item.approvalCommet}}</view>
@@ -37,8 +41,8 @@
     </view>
   </block>
 
-  <view class="add">
+   <view class="add">
     <button class="zan-btn zan-btn--primary" bindtap="newPlan">预约用车</button>
-  </view>
+  </view>  
 
 </view>

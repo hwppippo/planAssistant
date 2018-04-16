@@ -1,7 +1,7 @@
 <!--index.wxml-->
-<import src="../libs/dist/dialog/index.wxml" />
+<import src="../../libs/dist/dialog/index.wxml" />
 
-<include src="../libs/picker_datetime/picker_datetime.wxml" />
+<include src="../../libs/picker_datetime/picker_datetime.wxml" />
 <form bindsubmit="formSubmit">
 
   <template is="zan-dialog" data="{{ zanDialog }}"></template>
@@ -47,7 +47,7 @@
       </view>
       <view class="field-item-label zan-font-15">扣分</view>
       <view class="field-item-val">
-        <input name="deduct" value="{{deduct}}" placeholder="请输入扣分" />
+        <input name="deduct" value="{{deduct}}" type="number" placeholder="请输入扣分" />
       </view>
     </view>
 
@@ -57,7 +57,7 @@
       </view>
       <view class="field-item-label zan-font-15">费用</view>
       <view class="field-item-val">
-        <input name="cost" value="{{cost}}" placeholder="请输入缴费费用" />
+        <input name="cost" value="{{cost}}" type="digit" placeholder="请输入缴费费用" />
       </view>
     </view>
 
@@ -68,8 +68,10 @@
       </view>
       <text>票据</text>
       <view class='image-fl image-fl-image'>
-        <image style="width: 120px; height: 100px;" mode="aspectFit" src="{{invoice}}"></image>
+         <image style="width: 120px; height: 100px;" mode="aspectFit" src="{{invoice}}"></image> 
       </view>
+      <canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-300px;top:-300px;"></canvas>
+
       <view class='image-fl-image'>
         <image style="width: 50px; height: 50px;" mode="aspectFit" src="../../imgs/photo.png" bindtap="photoTap"></image>
       </view>

@@ -1,8 +1,8 @@
-var pickerFile = require('../libs/picker_datetime/picker_datetime.js');
+var pickerFile = require('../../libs/picker_datetime/picker_datetime.js');
 var qcloud = require('../../vendor/wafer2-client-sdk/index')
 var util = require('../../utils/util.js');
 var config = require('../../utils/config.js')
-const Zan = require('../libs/dist/index');
+const Zan = require('../../libs/dist/index');
 
 
 Page(Object.assign({}, Zan.Select, Zan.Field, {
@@ -33,6 +33,7 @@ Page(Object.assign({}, Zan.Select, Zan.Field, {
   },
 
   onLoad: function (options) {
+    console.log("options:",options);
     this.setData({
       id: options.id,
       openid: options.openid,
@@ -40,6 +41,7 @@ Page(Object.assign({}, Zan.Select, Zan.Field, {
       carNum: options.carNum,
       startTime: options.startTime,
       endTime: options.endTime,
+      commet:options.commet,
       destPlace: options.destPlace,
     })
 
@@ -77,7 +79,7 @@ Page(Object.assign({}, Zan.Select, Zan.Field, {
     console.log('时间值', this.data.startTime);
     console.log('时间值', this.data.endTime);
     console.log('目的地', this.data.destPlace);
-    console.log('备注', e.detail.value.commet);
+    console.log('备注', e.detail.value.approvalCommet);
     console.log('审批结果', e.detail.value.result);
 
     var result = '';
@@ -98,7 +100,7 @@ Page(Object.assign({}, Zan.Select, Zan.Field, {
       url: config.service.planStateUrl, //接口地址
       data: {
         id: this.data.id, state: result, open_id: this.data.openid, form_id: e.detail.formId, carNum: this.data.carNum,
-        time: this.data.startTime, approvalCommet: e.detail.value.commet
+        time: this.data.startTime, approvalCommet: e.detail.value.approvalCommet
       },
       method: 'Get',
       header: {

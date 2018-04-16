@@ -1,10 +1,12 @@
-var pickerFile = require('../libs/picker_datetime/picker_datetime.js');
+var pickerFile = require('../../libs/picker_datetime/picker_datetime.js');
 var qcloud = require('../../vendor/wafer2-client-sdk/index')
 var util = require('../../utils/util.js');
 var config = require('../../utils/config.js')
+const qiniuUploader = require("../../utils/qiniuUploader");
+
 var prj_value, car_value, type_value;
 
-const Zan = require('../libs/dist/index');
+const Zan = require('../../libs/dist/index');
 
 Page(Object.assign({}, Zan.Dialog, {
   data: {
@@ -36,6 +38,73 @@ Page(Object.assign({}, Zan.Dialog, {
       }
     })
     showView: (this.data.showView == "true" ? true : false)
+  },
+
+
+  // 初始化七牛相关参数
+  initQiniu: function () {
+    var options = {
+      region: 'NCN', // 华北区
+      uptokenURL: config.service.qiniuTokenUrl,
+      // uptoken: 'z7x1-PWg6Swytf7LHd4aEBkrvkfg2AFPYCfDfihC:NnOmUMBCoF8j-pRy2xBUzQurCXg=:eyJzY29wZSI6Ind6aGktY2FyIiwiZGVhZGxpbmUiOjE1MjM3ODQzODR9',
+      domain: 'http://p77srvwbm.bkt.clouddn.com',
+      shouldUseQiniuFileName: false
+    };
+    qiniuUploader.init(options);
+  },
+
+
+  photoTap: function (e) {
+    let that = this;
+    wx.showActionSheet({
+      itemList: ['从相册中选择', '拍照'],
+      itemColor: "#f7982a",
+      success: function (res) {
+        if (!res.cancel) {
+          if (res.tapIndex == 0) {
+            that.didPressChooesImage('album')
+          } else if (res.tapIndex == 1) {
+            that.didPressChooesImage('camera')
+          }
+        }
+      }
+    })
+  },
+
+  didPressChooesImage: function (type) {
+    var that = this;
+
+    that.initQiniu();
+    // 微信 API 选文件
+    wx.chooseImage({
+      sizeType: ['compressed'],
+      sourceType: [type],
+      success: function (photo) {
+        var filePath = photo.tempFilePaths[0];
+        that.setData({
+          invoice: filePath
+        });
+       
+        //交给七牛上传
+        qiniuUploader.upload(filePath, (res) => {
+          console.log(res.imageURL);
+          that.setData({
+            invoice_photo: res.imageURL
+          });
+          util.showSuccess('上传成功');
+        }, (error) => {
+          console.error('error: ' + JSON.stringify(error));
+          util.showSuccess('上传失败');
+        },
+          null,// 可以使用上述参数，或者使用 null 作为参数占位符
+          (progress) => {
+            console.log('上传进度', progress.progress)
+            console.log('已经上传的数据长度', progress.totalBytesSent)
+            console.log('预期需要上传的数据总长度', progress.totalBytesExpectedToSend)
+          }
+        );
+      }
+    })
   },
 
   selectPrjDialog() {
@@ -128,72 +197,18 @@ Page(Object.assign({}, Zan.Dialog, {
     this.datetimePicker.setPicker('startDate');
   },
 
-  photoTap: function (e) {
-    let that = this;
-    wx.showActionSheet({
-      itemList: ['从相册中选择', '拍照'],
-      itemColor: "#f7982a",
-      success: function (res) {
-        if (!res.cancel) {
-          if (res.tapIndex == 0) {
-            that.chooseWxImage('album')
-          } else if (res.tapIndex == 1) {
-            that.chooseWxImage('camera')
-          }
-        }
-      }
-    })
-  },
-
-  chooseWxImage: function (type) {
-    let that = this;
-    wx.chooseImage({
-      sizeType: ['original', 'compressed'],
-      sourceType: [type],
-      success: function (res) {
-        console.log(res);
-        that.setData({
-          invoice: res.tempFilePaths[0],
-        })
-        var tempFilePaths = res.tempFilePaths[0]
-        wx.uploadFile({
-          url: config.service.uploadUrl,
-          filePath: tempFilePaths,
-          name: 'file',
-          formData: {
-            'user': 'test'
-          },
-          success: function (res) {
-            //do something
-            var jsonStr = res.data;
-            jsonStr = jsonStr.replace(" ", "");
-            if (typeof jsonStr != 'object') {
-              jsonStr = jsonStr.replace(/\ufeff/g, "");//重点
-              var jj = JSON.parse(jsonStr);
-              res.data = jj;
-            }
-
-            if (res.data.code == 0) {
-              that.data.invoice_photo = res.data.data.name;
-            }
-          }
-        })
-      }
-    })
-  },
-
   clearInput() {
     this.data.placeContent = ''
     this.setData({
       commet: '',
-      cost:'',
+      cost: '',
       deduct: '',
       startDate: '',
       costType: '',
       prjType: '',
       carType: '',
-      invoice:'',
-      invoice_photo:''
+      invoice: '',
+      invoice_photo: ''
     });
   },
 
@@ -218,6 +233,8 @@ Page(Object.assign({}, Zan.Dialog, {
       util.showError('日期不能为空')
     } else if (this.data.costContent == '') {
       util.showError('费用不能为空')
+    } else if (this.data.invoice_photo == '') {
+      util.showError('图片上传未完成，请等待')
     } else {
       wx.request({
         url: config.service.addCostUrl,

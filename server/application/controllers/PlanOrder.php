@@ -33,7 +33,7 @@ class PlanOrder extends CI_Controller {
         $conditions = 'comName='.$cauth->comName;
       }
       // var_dump($conditions);
-      $suffix = 'order by startTime desc';
+      $suffix = 'order by updateTime desc';
       $operator = '';
       //条件为字符串
       $rows = DB::select('car_planOrder', ['*'], $conditions, $operator, $suffix);
@@ -102,15 +102,19 @@ class PlanOrder extends CI_Controller {
         //发送审批模板消息,待审批状态
         //先查询openid 对应的 formid
         $conditions = 'open_id="ozOZn5BVte1lhCndcpAaKPPZnEn4"';
-        //先查询该 openid 的权限
-         $suffix = 'order by update_time desc';
-        $operator = '';
-        $rows = DB::row('user_formId', ['*'], $conditions, $operator, $suffix);
+        $rows = DB::row('user_formId', ['*'], $conditions);
         
         if($rows != null){
-          $this->send_msg($this->encode_approval_pending($arr), 'ozOZn5NAoE9iHBIEqrRudgdnxMyE', 'FwwnBSSb-hmR54gSD_UOs9rGNUkUHanDUCgfyjuGwDg', $rows->form_id,'keyword4.DATA');
+          $this->send_msg($this->encode_approval_pending($arr), 'ozOZn5BVte1lhCndcpAaKPPZnEn4', 'FwwnBSSb-hmR54gSD_UOs9rGNUkUHanDUCgfyjuGwDg', $rows->form_id,'keyword4.DATA');
           //删掉该条记录
           DB::delete('user_formId', 'id = '.$rows->id);
+        }else{
+          $this->json([
+            'code' => -1,
+            'data' => [
+                'msg' => '消息发送失败'
+            ]
+        ]);
         }
       }else{
         $this->json([
@@ -130,6 +134,27 @@ class PlanOrder extends CI_Controller {
       $time=$year.'年'.$month.'日'.$day.'日'.' '.$hour;
 
       return $time;
+    }
+
+    public function del() {
+      $id=$_GET['id'];
+      
+      $conditions = 'id='.$id;
+      //条件为字符串
+      $rows = DB::delete('car_planOrder', $conditions);
+      if($rows){
+        $this->json([
+          'code' => 0,
+          'data' => $rows
+        ]);
+      }else{
+        $this->json([
+          'code' => -1,
+          'data' => [
+              'msg' => '删除失败'
+          ]
+        ]);
+      }
     }
 
     public function state() {

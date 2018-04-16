@@ -36,11 +36,20 @@ var config = {
     //完成用车
     planStateUrl: `${host}/weapp/planOrder/state`,
 
+    //删除记录
+    planDelUrl: `${host}/weapp/planOrder/del`,
+
     //缴费记录
     costUrl: `${host}/weapp/repair`,
 
     //增加缴费
-    addCostUrl: `${host}/weapp/repair/add`
+    addCostUrl: `${host}/weapp/repair/add`,
+
+    //删除缴费
+    delCostUrl: `${host}/weapp/repair/del`,
+
+    //7牛存储
+    qiniuTokenUrl: `${host}/weapp/qiniu/getToken`
   },
   base: {
     reason: {

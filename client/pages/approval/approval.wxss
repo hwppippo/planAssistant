@@ -1,5 +1,5 @@
 /**index.wxss**/
-@import "../libs/common/common.wxss";
+@import "../../libs/common/common.wxss";
 
 .page-item {
   margin: 0 30rpx;
