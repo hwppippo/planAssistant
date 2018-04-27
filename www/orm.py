@@ -4,13 +4,11 @@
 # @Link    : link
 # @Version : 1.0.0
 
-import asyncio, logging
+import logging
 import aiomysql
-
 
 def log(sql, args=()):
     logging.info('SQL: %s' % sql)
-
 
 # 创建连接池,每个http请求都从连接池连接到数据库
 async def create_pool(loop, **kw):
@@ -36,7 +34,6 @@ async def destory_pool():
         __pool.close()
         await __pool.wait_closed()
 
-
 # select语句
 async def select(sql, args, size=None):
     log(sql, args)
@@ -50,7 +47,6 @@ async def select(sql, args, size=None):
                 rs = await cur.fetchall()
         logging.info('rows returned: %s' % len(rs))
         return rs
-
 
 # insert,update,deleta语句
 async def execute(sql, args, autocommit=True):
@@ -186,7 +182,7 @@ class Model(dict, metaclass=ModelMetaclass):
         self[key] = value
 
     def getValue(self, key):
-        #返回对象的属性,如果没有对应属性则会调用__getattr__
+        # 返回对象的属性,如果没有对应属性则会调用__getattr__
         return getattr(self, key, None)
 
     def getValueOrDefault(self, key):
@@ -228,7 +224,7 @@ class Model(dict, metaclass=ModelMetaclass):
                 args.extend(limit)
             else:
                 raise ValueError('Invalid limit value: %s' % str(limit))
-        #调用select函数,返回值是从数据库里查找到的数据结果
+        # 调用select函数,返回值是从数据库里查找到的数据结果
         rs = await select(' '.join(sql), args)
         return [cls(**r) for r in rs]
 
@@ -247,6 +243,23 @@ class Model(dict, metaclass=ModelMetaclass):
         return rs[0]['_num_']
 
     @classmethod
+    async def findOne(cls, selectedField, where=None, **kw):
+        """ find number by select and where. """
+        sql = ['select %s from `%s`' % (selectedField, cls.__table__)]
+        if where:
+            sql.append('where')
+            sql.append(where)
+        orderBy = kw.get('orderBy', None)
+        if orderBy:
+            sql.append('order by')
+            sql.append(orderBy)
+
+        rs = await select(' '.join(sql), [], 1)
+        if len(rs) == 0:
+            return None
+        return cls(**rs[0])
+
+    @classmethod
     async def find(cls, pk):
         ' find object by primary key. '
         rs = await select('%s where `%s`=?' % (cls.__select__,
@@ -263,6 +276,7 @@ class Model(dict, metaclass=ModelMetaclass):
         if rows != 1:
             logging.warning(
                 'failed to insert record: affected rows: %s' % rows)
+        return rows
 
     async def update(self):
         args = list(map(self.getValue, self.__fields__))
@@ -271,6 +285,8 @@ class Model(dict, metaclass=ModelMetaclass):
         if rows != 1:
             logging.warning(
                 'failed to update by primary key: affected rows: %s' % rows)
+
+        return rows
 
     async def remove(self):
         args = [self.getValue(self.__primary_key__)]
