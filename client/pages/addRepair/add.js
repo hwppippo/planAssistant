@@ -38,6 +38,7 @@ Page(Object.assign({}, Zan.Dialog, {
       }
     })
     showView: (this.data.showView == "true" ? true : false)
+    that.initQiniu();
   },
 
 
@@ -45,14 +46,12 @@ Page(Object.assign({}, Zan.Dialog, {
   initQiniu: function () {
     var options = {
       region: 'NCN', // 华北区
-      uptokenURL: config.service.qiniuTokenUrl,
-      // uptoken: 'z7x1-PWg6Swytf7LHd4aEBkrvkfg2AFPYCfDfihC:NnOmUMBCoF8j-pRy2xBUzQurCXg=:eyJzY29wZSI6Ind6aGktY2FyIiwiZGVhZGxpbmUiOjE1MjM3ODQzODR9',
+      uptokenURL: config.service.getQiniuTokenUrl,
       domain: 'http://p77srvwbm.bkt.clouddn.com',
-      shouldUseQiniuFileName: false
+      shouldUseQiniuFileName: true
     };
     qiniuUploader.init(options);
   },
-
 
   photoTap: function (e) {
     let that = this;
@@ -74,7 +73,6 @@ Page(Object.assign({}, Zan.Dialog, {
   didPressChooesImage: function (type) {
     var that = this;
 
-    that.initQiniu();
     // 微信 API 选文件
     wx.chooseImage({
       sizeType: ['compressed'],
@@ -213,6 +211,7 @@ Page(Object.assign({}, Zan.Dialog, {
   },
 
   formSubmit: function (e) {
+    console.log(e.detail.formId);
     console.log('项目部', this.data.prjType);
     console.log('车辆', this.data.carType);
     console.log('缴费类型', this.data.costType);
@@ -222,7 +221,8 @@ Page(Object.assign({}, Zan.Dialog, {
     console.log('文件名', this.data.invoice_photo)
 
     console.log('当前位置', config.address);
-    var openId = wx.getStorageSync('openId');
+    var jwt = wx.getStorageSync('jwt');
+    var openId = jwt.access_token
     console.log(openId);
 
     if (this.data.prjType == '') {
@@ -240,14 +240,15 @@ Page(Object.assign({}, Zan.Dialog, {
         url: config.service.addCostUrl,
         data: {
           prj: this.data.prjType, carNum: this.data.carType,
-          open_id: openId,
+          openid: openId,
           repair_type: this.data.costType,
           repair_time: this.data.startDate,
           repair_cost: e.detail.value.cost,
           invoice: this.data.invoice_photo,
           deduct: e.detail.value.deduct,
           repair_location: config.address,
-          commet: e.detail.value.commet
+          commet: e.detail.value.commet,
+          form_id: e.detail.formId,
         },
         method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
         header: {
@@ -257,9 +258,12 @@ Page(Object.assign({}, Zan.Dialog, {
           console.log(res);
           if (res.data.code == 0) {
             util.showSuccess('添加成功');
-            wx.switchTab({
-              url: '../repair/repair',
-            })
+            setTimeout(function () {
+              // 要延时执行的代码
+              wx.switchTab({
+                url: '../repair/repair',
+              })
+            }, 1000) // 延迟时间 这里是 1 秒 
           }
         },
         fail: function (res) {

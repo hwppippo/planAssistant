@@ -131,6 +131,7 @@ function doUpload(filePath, success, fail, options, progress) {
 }
 
 function getQiniuToken(callback) {
+  console.log("url:", config.qiniuUploadTokenURL)
   wx.request({
     url: config.qiniuUploadTokenURL,
     success: function (res) {

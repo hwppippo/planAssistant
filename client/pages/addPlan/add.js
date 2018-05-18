@@ -1,5 +1,4 @@
 var pickerFile = require('../../libs/picker_datetime/picker_datetime.js');
-var qcloud = require('../../vendor/wafer2-client-sdk/index')
 var util = require('../../utils/util.js');
 const config = require('../../utils/config.js')
 
@@ -89,9 +88,9 @@ Page(Object.assign({}, Zan.Dialog, Zan.Field, {
     this.showZanDialog({
       buttonsShowVertical: true,
       buttons: [{
-        text: '陕A 67cl7',
+        text: '陕A 67CL7',
         color: 'red',
-        type: '陕A 67cl7'
+        type: '陕A 67CL7'
       }]
     }).then(({ type }) => {
       console.log('=== dialog with vertical buttons ===', `type: ${type}`);
@@ -113,8 +112,8 @@ Page(Object.assign({}, Zan.Dialog, Zan.Field, {
     console.log('出车事由', e.detail.value.commet);
     console.log('目的地', e.detail.value.dest);
     console.log('当前位置', config.address);
-    var openId = wx.getStorageSync('openId');
-    console.log(openId);
+    var jwt = wx.getStorageSync('jwt');
+    console.log(jwt);
 
     if (this.data.prjType == '') {
       util.showError('项目不能为空')
@@ -124,14 +123,14 @@ Page(Object.assign({}, Zan.Dialog, Zan.Field, {
       util.showError('时间不能为空')
     } else if (e.detail.value.commet == '') {
       util.showError('出车事由不能为空')
-    } else if (e.detail.value.destPlace == '') {
+    } else if (e.detail.value.dest == '') {
       util.showError('目的地不能为空')
     } else {
       wx.request({
         url: config.service.addPlanUrl,
         data: {
           prj: this.data.prjType, carNum: this.data.carType,
-          open_id: openId,
+          openid: jwt.access_token,
           startTime: this.data.startDate, endTime:
           this.data.endDate, user: this.data.people,
           commet: e.detail.value.commet,

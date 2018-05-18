@@ -1,13 +1,18 @@
 <import src="../../libs/dist/tab/index.wxml" />
+<import src="../../libs/dist/capsule/index.wxml" />
 
 <view class='container'>
-<template is="zan-tab" data="{{ ...tab1, componentId: 'tab1' }}"></template>
+  <template is="zan-tab" data="{{ ...tab1, componentId: 'tab1' }}"></template>
+
+  <view class="zan-cell zan-cell--last-child">
+    <template is="capsule" data="{{ leftText: '', rightText: '只显示一天内信息', color: '#38f' }}" />
+  </view>
 
   <!-- 订单列表 -->
-   <block wx:for-items="{{carInfoData}}">
+  <block wx:for-items="{{carInfoData}}">
     <view class='card  b-shadow'>
 
-      <view class='nearCard-fl' bindtap='toggleBtn' id="{{item.id}}" data-state="{{item.isStop}}" data-info="{{item}}">
+      <view class='nearCard-fl' bindtap='toggleBtn' id="{{item.id}}" data-state="{{item.isStop}}" data-info="{{item}}" bindlongtap="longTap" bindtouchstart="touchStart" bindtouchend="touchEnd">
         <image src='../../imgs/car.png'></image>
       </view>
 
@@ -26,7 +31,7 @@
         </view>
       </view>
 
-      <view class=' section_book {{item.isStop=="不同意"?"red":"blue"}}'>
+      <view class=' section_book {{item.isStop=="不同意"?"red":"blue"}}' bindlongtap="longTap" bindtouchstart="touchStart" bindtouchend="touchEnd">
         <text>{{item.isStop}}</text>
       </view>
     </view>
@@ -41,8 +46,8 @@
     </view>
   </block>
 
-   <view class="add">
+  <view class="add">
     <button class="zan-btn zan-btn--primary" bindtap="newPlan">预约用车</button>
-  </view>  
+  </view>
 
 </view>

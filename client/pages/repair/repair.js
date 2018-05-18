@@ -12,20 +12,47 @@ Page({
     openId: '',
     imagelist: [],
     imageUrl: "http://p77srvwbm.bkt.clouddn.com/",
+    loading: true,
+    hasMore: false,
+    page: 1,
+    allDatas: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.setData({
+      page: 1
+    })
   },
 
   onShow: function () {
     console.log('page onshow');
     //这里更新数据setData
-    this.data.openId = wx.getStorageSync('openId');
-    this.getInfo(this.data.openId);
+    var jwt = wx.getStorageSync('jwt');
+    this.data.openId = jwt.access_token
+    this.getInfo(this.data.openId, this.data.page);
   },
+
+  onPullDownRefresh: function () {
+    wx.showNavigationBarLoading() //在标题栏中显示加载
+    var that = this;
+    that.setData({ page: 1 ,allDatas:[]})
+    setTimeout(function () {
+      that.getInfo(that.data.openId, that.data.page)
+      // complete
+      wx.hideNavigationBarLoading() //完成停止加载
+      wx.stopPullDownRefresh() //停止下拉刷新
+    }, 1000);
+  },
+
+  onReachBottom: function () {
+    this.setData({ page: this.data.page + 1 })
+    console.log("上拉加载更多...." + this.data.page)
+    this.getInfo(this.data.openId, this.data.page)
+  },
+
   // 触摸开始时间
   touchStartTime: 0,
   // 触摸结束时间
@@ -84,23 +111,34 @@ Page({
     })
   },
 
-  getInfo: function (openid) {
+  getInfo: function (openid, page) {
     var that = this;
+
+    that.setData({
+      loading: false,
+      hasMore: true
+    })
+
     wx.request({
       url: config.service.costUrl, //接口地址
-      data: { open_id: openid },
+      data: { access_token: openid, page: page },
       method: 'Get',
       header: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
       },
       success: function (res) {
         console.log(res.data);
-        if (res.data.code != 0) {
-          util.showError('没有缴费');
-        }
         //设置车辆展示信息
+        let newDatas = res.data.data;
+        for (var i in newDatas) {
+          var item = newDatas[i];
+          that.data.allDatas.push(item);
+        }
+
         that.setData({
-          carInfoData: res.data.data,
+          carInfoData: that.data.allDatas,
+          loading: true,
+          hasMore: false
         })
       }
     })
@@ -119,7 +157,7 @@ Page({
 
     wx.request({
       url: config.service.delCostUrl, //接口地址
-      data: { id: itemid },
+      data: { itemid: itemid },
       method: 'Get',
       header: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -138,7 +176,6 @@ Page({
       }
     })
   },
-
 
   //切换隐藏和显示 
   toggleBtn: function (event) {

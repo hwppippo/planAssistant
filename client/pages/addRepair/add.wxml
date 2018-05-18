@@ -2,7 +2,7 @@
 <import src="../../libs/dist/dialog/index.wxml" />
 
 <include src="../../libs/picker_datetime/picker_datetime.wxml" />
-<form bindsubmit="formSubmit">
+<form bindsubmit="formSubmit" report-submit>
 
   <template is="zan-dialog" data="{{ zanDialog }}"></template>
 

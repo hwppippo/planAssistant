@@ -3,8 +3,10 @@
  */
 
 // 此处主机域名修改成腾讯云解决方案分配的域名
-var host = 'https://746828943.lzbplan.cn';
-//var host = 'https://4z2dgktq.qcloud.la';
+var host = 'https://car.wzhisoft.cn';
+//var host = 'http://127.0.0.1:9000';
+
+
 var address = '';
 
 var config = {
@@ -16,7 +18,7 @@ var config = {
     host,
 
     // 登录地址，用于建立会话
-    loginUrl: `${host}/weapp/login`,
+    loginUrl: `${host}/login`,
 
     // 测试的请求地址，用于测试会话
     requestUrl: `${host}/weapp/user`,
@@ -28,28 +30,28 @@ var config = {
     uploadUrl: `${host}/weapp/upload`,
 
     //用车列表
-    planOrderUrl: `${host}/weapp/planOrder`,
+    planOrderUrl: `${host}/carPlans`,
 
     //预约用车
-    addPlanUrl: `${host}/weapp/planOrder/add`,
+    addPlanUrl: `${host}/newCarPlans`,
+
+    //删除用车
+    delPlanUrl: `${host}/delCarPlans`,
 
     //完成用车
-    planStateUrl: `${host}/weapp/planOrder/state`,
-
-    //删除记录
-    planDelUrl: `${host}/weapp/planOrder/del`,
+    planStateUrl: `${host}/doCarPlans`,
 
     //缴费记录
-    costUrl: `${host}/weapp/repair`,
+    costUrl: `${host}/carCosts`,
 
     //增加缴费
-    addCostUrl: `${host}/weapp/repair/add`,
+    addCostUrl: `${host}/newCarCosts`,
 
     //删除缴费
-    delCostUrl: `${host}/weapp/repair/del`,
+    delCostUrl: `${host}/delCarCosts`,
 
-    //7牛存储
-    qiniuTokenUrl: `${host}/weapp/qiniu/getToken`
+    //7牛 Token
+    getQiniuTokenUrl: `${host}/qiniuToken`
   },
   base: {
     reason: {

@@ -1,6 +1,5 @@
 var util = require('../../utils/util.js');
 var mylogin = require('../../utils/login.js');
-var qcloud = require('../../vendor/wafer2-client-sdk/index');
 var config = require('../../utils/config.js');
 
 const { Tab, extend } = require('../../libs/dist/index');
@@ -20,7 +19,7 @@ Page(extend({}, Tab, {
       }],
       selectedId: 'undone'
     },
-    openId: '',
+    access_token: '',
     cauth: 0,//默认权限
     allDatas: [],
 
@@ -38,18 +37,25 @@ Page(extend({}, Tab, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.data.openId = wx.getStorageSync('openId');
-    if (this.data.openId.length == 0) {
-      this.login();
+    var jwt = wx.getStorageSync('jwt');
+    var that = this;
+    if (!jwt.access_token) { //检查 jwt 是否存在 如果不存在调用登录
+      that.login();
+    } else {
+      console.log(jwt.account_id);
     }
   },
 
   onShow: function () {
     console.log('page onshow');
     //这里更新数据setData
-    this.data.openId = wx.getStorageSync('openId');
-    if (this.data.openId.length > 0) {
-      this.getInfo(this.data.openId);
+    var jwt = wx.getStorageSync('jwt');
+    var that = this;
+    if (jwt.access_token) { //检查 jwt 是否存在 如果不存在调用登录
+      that.getInfo(jwt.access_token);
+      that.setData({
+        access_token: jwt.access_token,
+      })
     }
   },
 
@@ -98,9 +104,12 @@ Page(extend({}, Tab, {
   /// 长按
   longTap: function (e) {
     var itemId = e.currentTarget.id;
-    console.log("long tap:", itemId)
+
     var that = this;
-    if (e.currentTarget.dataset.info.open_id != that.data.openId) {
+    console.log("open_id:", e.currentTarget.dataset.info.openid)
+    console.log("access_token:", that.data.access_token)
+
+    if (e.currentTarget.dataset.info.openid != that.data.access_token) {
       util.showError('只能删除本人信息');
       return;
     }
@@ -130,11 +139,11 @@ Page(extend({}, Tab, {
     })
   },
 
-  getInfo: function (openid) {
+  getInfo: function (token) {
     var that = this;
     wx.request({
       url: config.service.planOrderUrl, //接口地址
-      data: { open_id: openid },
+      data: { access_token: token },
       method: 'Get',
       header: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -145,6 +154,7 @@ Page(extend({}, Tab, {
           util.showError('没有预约');
           return;
         }
+
         that.data.allDatas = res.data.data;
         let undoneData = [];
         for (var i in that.data.allDatas) {
@@ -153,6 +163,7 @@ Page(extend({}, Tab, {
             undoneData.push(item);
           }
         }
+        
         //设置车辆展示信息
         that.setData({
           carInfoData: undoneData,
@@ -164,7 +175,6 @@ Page(extend({}, Tab, {
 
   delInfo: function (itemid) {
     var that = this;
-    // let allDatas = that.data.carInfoData;
     let newallData = [];
     var delid;
     for (var i in that.data.allDatas) {
@@ -179,11 +189,9 @@ Page(extend({}, Tab, {
       }
     }
 
-    // console.log("all：", newallData);
-
     wx.request({
-      url: config.service.planDelUrl, //接口地址
-      data: { id: itemid },
+      url: config.service.delPlanUrl, //接口地址
+      data: { itemid: itemid },
       method: 'Get',
       header: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -232,7 +240,7 @@ Page(extend({}, Tab, {
               + '&commet=' + event.currentTarget.dataset.info.commet
               + '&destPlace=' + event.currentTarget.dataset.info.destPlace
               + '&id=' + event.currentTarget.dataset.info.id
-              + '&openid=' + event.currentTarget.dataset.info.open_id
+              + '&openid=' + event.currentTarget.dataset.info.openid
             })
           } else {
             var toggleBtnVal = that.data.uhide;
@@ -255,24 +263,34 @@ Page(extend({}, Tab, {
     var that = this
     console.log('正在登陆');
     // 调用登录接口
-
-    // 如果不是首次登录，不会返回用户信息，请求用户信息接口获取
-    qcloud.request({
-      url: config.service.requestUrl,
-      login: true,
-      success(result) {
-        util.showSuccess('登录成功')
-        console.log('openId', result.data.data['openId']);
-        //缓冲数据
-        wx.setStorageSync('openId', result.data.data['openId']);
-        //根据 id 号获取数据
-        that.getInfo(result.data.data['openId']);
-      },
-
-      fail(error) {
-        util.showModel('请求失败', error)
-        console.log('request fail', error)
+    wx.login({
+      success: function (res) {
+        if (res.code) {
+          //发起网络请求
+          wx.request({
+            url: config.service.loginUrl, //接口地址
+            data: { code: res.code },
+            method: 'Get',
+            header: {
+              "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+            },
+            success: function (res) {
+              if (res.data.code == 0) {
+                util.showSuccess('登录成功')
+                console.log('data', res.data);
+                //缓冲数据
+                wx.setStorage({ key: "jwt", data: res.data });
+                //根据 token 获取数据
+                that.getInfo(res.data.access_token);
+              } else {
+                util.showSuccess('登录失败');
+              }
+            }
+          })
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
       }
-    })
+    });
   }
 }));

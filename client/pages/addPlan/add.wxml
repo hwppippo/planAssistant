@@ -62,9 +62,7 @@
         <input name="dest" value="{{dest}}" placeholder="请输入行程目的地" />
       </view>
     </view>
-
   </view>
-
 
   <view class="zan-btns">
     <button class="zan-btn zan-btn--primary" formType="submit">添加</button>

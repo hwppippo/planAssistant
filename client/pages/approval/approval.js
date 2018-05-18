@@ -99,8 +99,8 @@ Page(Object.assign({}, Zan.Select, Zan.Field, {
     wx.request({
       url: config.service.planStateUrl, //接口地址
       data: {
-        id: this.data.id, state: result, open_id: this.data.openid, form_id: e.detail.formId, carNum: this.data.carNum,
-        time: this.data.startTime, approvalCommet: e.detail.value.approvalCommet
+        itemid: this.data.id, state: result, openid: this.data.openid, form_id: e.detail.formId, carNum: this.data.carNum,
+        startTime: this.data.startTime, approvalCommet: e.detail.value.approvalCommet
       },
       method: 'Get',
       header: {
@@ -109,9 +109,12 @@ Page(Object.assign({}, Zan.Select, Zan.Field, {
       success: function (res) {
         console.log(res.data)
         util.showSuccess('审批成功');
-        wx.switchTab({
-          url: '../index/index',
-        })
+        setTimeout(function () {
+          // 要延时执行的代码
+          wx.switchTab({
+            url: '../index/index',
+          })
+        }, 1000) // 延迟时间 这里是 1 秒  
       }
     })
   }

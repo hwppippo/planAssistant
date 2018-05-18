@@ -4,3 +4,27 @@ page {
   min-height: 100%;
   background-color: #e4e4e4;
 }
+
+.page_list {
+    height:100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.tips {
+    font-size: 28rpx;
+    text-align: center;
+    padding: 50rpx;
+    color: #ccc;
+}
+.tips image {
+    width: 40rpx;
+    height: 40rpx;
+    margin-right: 20rpx;
+}
+
+.tips image,
+.tips text {
+    vertical-align: middle;
+}
