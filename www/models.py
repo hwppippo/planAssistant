@@ -7,8 +7,10 @@
 import time, uuid
 from orm import Model, StringField, BooleanField, FloatField
 
+
 def next_id():
     return '%015d%s000' % (int(time.time() * 1000), uuid.uuid4().hex)
+
 
 class User(Model):
     __table__ = 'users'
@@ -20,6 +22,7 @@ class User(Model):
     name = StringField(ddl='varchar(50)')
     image = StringField(ddl='varchar(500)')
     created_at = FloatField(default=time.time)
+
 
 class AccessToken(Model):
     __table__ = 'AccessToken'
@@ -62,6 +65,7 @@ class CarCost(Model):
     deduct = StringField(ddl='varchar(2)')
     repairLocation = StringField(ddl='varchar(150)')
     commet = StringField(ddl='varchar(50)')
+    flagIcon = StringField(ddl='varchar(100)')
 
 
 class UserAuth(Model):

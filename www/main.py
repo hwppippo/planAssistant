@@ -1,4 +1,5 @@
-import logging; logging.basicConfig(level=logging.INFO)
+import logging
+logging.basicConfig(level=logging.INFO)
 
 import asyncio, os, json, time
 from datetime import datetime
@@ -9,37 +10,20 @@ from jinja2 import Environment, FileSystemLoader
 from config import configs
 
 import orm
-from coroweb import add_routes, add_static
+from coroweb import add_routes
 
-def init_jinja2(app, **kw):
-    logging.info('init jinja2...')
-    options = dict(
-        autoescape = kw.get('autoescape', True),
-        block_start_string = kw.get('block_start_string', '{%'),
-        block_end_string = kw.get('block_end_string', '%}'),
-        variable_start_string = kw.get('variable_start_string', '{{'),
-        variable_end_string = kw.get('variable_end_string', '}}'),
-        auto_reload = kw.get('auto_reload', True)
-    )
-    path = kw.get('path', None)
-    if path is None:
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
-    logging.info('set jinja2 template path: %s' % path)
-    env = Environment(loader=FileSystemLoader(path), **options)
-    filters = kw.get('filters', None)
-    if filters is not None:
-        for name, f in filters.items():
-            env.filters[name] = f
-    app['__templating__'] = env
-
+# 这个函数的作用就是当有 http 请求的时候，通过 logging.info 输出请求的信息，其中包括请求的方法和路径
 @asyncio.coroutine
 def logger_factory(app, handler):
     @asyncio.coroutine
     def logger(request):
         logging.info('Request: %s %s' % (request.method, request.path))
         # yield from asyncio.sleep(0.3)
+        # handler 为处理函数，request 为参数
         return (yield from handler(request))
+
     return logger
+
 
 @asyncio.coroutine
 def data_factory(app, handler):
@@ -49,12 +33,21 @@ def data_factory(app, handler):
             if request.content_type.startswith('application/json'):
                 request.__data__ = yield from request.json()
                 logging.info('request json: %s' % str(request.__data__))
-            elif request.content_type.startswith('application/x-www-form-urlencoded'):
+            elif request.content_type.startswith(
+                    'application/x-www-form-urlencoded'):
                 request.__data__ = yield from request.post()
                 logging.info('request form: %s' % str(request.__data__))
         return (yield from handler(request))
+
     return parse_data
 
+# 请求对象 request 的处理工序流水线先后依次是：
+# logger_factory->response_factory->RequestHandler().__call__->get 或 post->handler
+# 对应的响应对象 response 的处理工序流水线先后依次是:
+# 由 handler 构造出要返回的具体对象
+# 然后在这个返回的对象上加上'__method__'和'__route__'属性，以标识别这个对象并使接下来的程序容易处理
+# RequestHandler 目的就是从请求对象 request 的请求 content 中获取必要的参数，调用 URL 处理函数, 然后把结果返回给 response_factory
+# response_factory 在拿到经过处理后的对象，经过一系列类型判断，构造出正确 web.Response 对象，以正确的方式返回给
 @asyncio.coroutine
 def response_factory(app, handler):
     @asyncio.coroutine
@@ -76,12 +69,16 @@ def response_factory(app, handler):
         if isinstance(r, dict):
             template = r.get('__template__')
             if template is None:
-                resp = web.Response(body=json.dumps(r, ensure_ascii=False, default=lambda o: o.__dict__).encode('utf-8'))
+                resp = web.Response(
+                    body=json.dumps(
+                        r, ensure_ascii=False, default=lambda o: o.__dict__)
+                    .encode('utf-8'))
                 resp.content_type = 'application/json;charset=utf-8'
                 return resp
             else:
                 r['__user__'] = request.__user__
-                resp = web.Response(body=app['__templating__'].get_template(template).render(**r).encode('utf-8'))
+                resp = web.Response(body=app['__templating__'].get_template(
+                    template).render(**r).encode('utf-8'))
                 resp.content_type = 'text/html;charset=utf-8'
                 return resp
         if isinstance(r, int) and t >= 100 and t < 600:
@@ -94,33 +91,21 @@ def response_factory(app, handler):
         resp = web.Response(body=str(r).encode('utf-8'))
         resp.content_type = 'text/plain;charset=utf-8'
         return resp
+
     return response
 
-def datetime_filter(t):
-    delta = int(time.time() - t)
-    if delta < 60:
-        return u'1分钟前'
-    if delta < 3600:
-        return u'%s分钟前' % (delta // 60)
-    if delta < 86400:
-        return u'%s小时前' % (delta // 3600)
-    if delta < 604800:
-        return u'%s天前' % (delta // 86400)
-    dt = datetime.fromtimestamp(t)
-    return u'%s年%s月%s日' % (dt.year, dt.month, dt.day)
 
 @asyncio.coroutine
 def init(loop):
     yield from orm.create_pool(loop=loop, **configs.db)
-    app = web.Application(loop=loop, middlewares=[
-        logger_factory, response_factory
-    ])
-    init_jinja2(app, filters=dict(datetime=datetime_filter))
+    # 这是装饰模式的体现，logger_factory, response_factory 都是 URL 处理函数前（如 handler.index）的装饰功能
+    app = web.Application(
+        loop=loop, middlewares=[logger_factory, response_factory])
     add_routes(app, 'handlers')
-    add_static(app)
-    srv = yield from loop.create_server(app.make_handler(), '127.0.0.1', 9000)
-    logging.info('server started at http://127.0.0.1:9000...')
+    srv = yield from loop.create_server(app.make_handler(), '0.0.0.0', 9000)
+    logging.info('server started at http://0.0.0.0:9000...')
     return srv
+
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(init(loop))

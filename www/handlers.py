@@ -44,10 +44,12 @@ async def api_get_carPlans(*, access_token):
     if len(auths) == 0:
         data = {"code": -1, "data": "", "cauth": ""}
     else:
-        conditions = conditions + ' and ' + 'comName=' + auths[0]['comName']
+        conditions = conditions + ' and ' + 'comName=' + auths[0][
+            'comName'] + ' and create_time > DATE_SUB(NOW(), INTERVAL 1 DAY)'
         if auths[0]['cauth'] == 1:
-            conditions = 'comName=' + auths[0]['comName']
-        carPlans = await CarOrderPlan.findAll(conditions, orderBy='startTime desc')
+            conditions = 'comName=' + auths[0]['comName'] + ' and create_time > DATE_SUB(NOW(), INTERVAL 1 DAY)'
+        carPlans = await CarOrderPlan.findAll(
+            conditions, orderBy='startTime desc')
         # logging.info(carPlans)
         if len(carPlans) != 0:
             # 构造字典
@@ -60,10 +62,24 @@ async def api_get_carPlans(*, access_token):
 
 def encode_approval_pending(startTime, car, destPlace, commet):
     color = "#000"
-    data = {"keyword1": {"value": startTime, "color": color},
-            "keyword2": {"value": car, "color": color},
-            "keyword3": {"value": destPlace, "color": color},
-            "keyword4": {"value": commet, "color": color}}
+    data = {
+        "keyword1": {
+            "value": startTime,
+            "color": color
+        },
+        "keyword2": {
+            "value": car,
+            "color": color
+        },
+        "keyword3": {
+            "value": destPlace,
+            "color": color
+        },
+        "keyword4": {
+            "value": commet,
+            "color": color
+        }
+    }
 
     return data
 
@@ -86,8 +102,17 @@ def is_number(s):
 
 
 @post('/newCarPlans')
-async def api_newCarPlans(*, prj, carNum, openid, startTime,
-                          endTime, user, commet="", location, destPlace, form_id):
+async def api_newCarPlans(*,
+                          prj,
+                          carNum,
+                          openid,
+                          startTime,
+                          endTime,
+                          user,
+                          commet="",
+                          location,
+                          destPlace,
+                          form_id):
     carPlan = CarOrderPlan(
         comName="1",
         prj=prj,
@@ -115,9 +140,11 @@ async def api_newCarPlans(*, prj, carNum, openid, startTime,
         print(r)
         # 拼接数据
         if r is not None:
-            value = encode_approval_pending(startTime, carNum, destPlace, commet)
-            response = await wechatPush.do_push(configs.openid, configs.undone_template, r['formid'], value,
-                                                "keyword4.DATA")
+            value = encode_approval_pending(startTime, carNum, destPlace,
+                                            commet)
+            response = await wechatPush.do_push(
+                configs.openid, configs.undone_template, r['formid'], value,
+                "keyword4.DATA")
             await r.remove()
         data['code'] = 0
         data['msg'] = response
@@ -129,14 +156,26 @@ async def api_newCarPlans(*, prj, carNum, openid, startTime,
 
 def encode_approval_complete(orderTime, car, state):
     color = "#000"
-    data = {"keyword1": {"value": orderTime, "color": color},
-            "keyword2": {"value": car, "color": color},
-            "keyword3": {"value": state, "color": color}}
+    data = {
+        "keyword1": {
+            "value": orderTime,
+            "color": color
+        },
+        "keyword2": {
+            "value": car,
+            "color": color
+        },
+        "keyword3": {
+            "value": state,
+            "color": color
+        }
+    }
     return data
 
 
 @get('/doCarPlans')
-async def api_doCarPlans(*, itemid, carNum, openid, startTime, approvalCommet, state, form_id):
+async def api_doCarPlans(*, itemid, carNum, openid, startTime, approvalCommet,
+                         state, form_id):
     r = await CarOrderPlan.find(itemid)
     r.isStop = state
     r.approvalCommet = approvalCommet
@@ -156,7 +195,8 @@ async def api_doCarPlans(*, itemid, carNum, openid, startTime, approvalCommet, s
             if r is not None:
                 # 拼接数据
                 value = encode_approval_complete(startTime, carNum, state)
-                await wechatPush.do_push(openid, configs.done_template, r['formid'], value, "keyword3.DATA")
+                await wechatPush.do_push(openid, configs.done_template,
+                                         r['formid'], value, "keyword3.DATA")
                 await r.remove()
     else:
         data['code'] = -1
@@ -177,7 +217,7 @@ async def api_delCarPlans(*, itemid):
 
 
 @get('/carCosts')
-async def api_get_carCosts(*, access_token):
+async def api_get_carCosts(*, access_token, page):
     # 先查询权限
     conditions = 'openid=' + '"' + access_token + '"'
     auths = await UserAuth.findAll(conditions)
@@ -185,12 +225,14 @@ async def api_get_carCosts(*, access_token):
     if len(auths) == 0:
         data = {"code": -1, "data": "", "cauth": ""}
     else:
-        conditions = conditions + ' and ' + 'comName=' + auths[0]['comName']
+        limit = " LIMIT %d,%d" % ((int(page) - int(1)) * int(5), 5)
+        conditions = conditions + ' and ' + 'comName=' + auths[0][
+            'comName'] + limit
         if auths[0]['cauth'] == 1:
-            conditions = 'comName=' + auths[0]['comName']
+            conditions = 'comName=' + auths[0]['comName'] + limit
         logging.info("查询条件 %s " % conditions)
 
-        carCost = await CarCost.findAll(conditions, orderBy='repairTime desc')
+        carCost = await CarCost.findAll(conditions)
         if len(carCost) != 0:
             # 构造字典
             data = {"code": 0, "data": carCost, "cauth": auths[0]['cauth']}
@@ -201,8 +243,29 @@ async def api_get_carCosts(*, access_token):
 
 
 @post('/newCarCosts')
-async def api_newCarCosts(*, prj, carNum, openid, repair_type,
-                          repair_time, repair_cost, invoice="", deduct, repair_location, commet, form_id):
+async def api_newCarCosts(*,
+                          prj,
+                          carNum,
+                          openid,
+                          repair_type,
+                          repair_time,
+                          repair_cost,
+                          invoice="",
+                          deduct,
+                          repair_location,
+                          commet,
+                          form_id):
+    if repair_type == "停车费":
+        flagIcon = "http://p77srvwbm.bkt.clouddn.com/p.png"
+    elif repair_type == "过路费":
+        flagIcon = "http://p77srvwbm.bkt.clouddn.com/speed.png"
+    elif repair_type == "加油费":
+        flagIcon = "http://p77srvwbm.bkt.clouddn.com/oil.png"
+    elif repair_type == "日常保养":
+        flagIcon = "http://p77srvwbm.bkt.clouddn.com/wash.png"
+    elif repair_type == "违章缴费":
+        flagIcon = "http://p77srvwbm.bkt.clouddn.com/w.png"
+
     carCost = CarCost(
         comName="1",
         prj=prj,
@@ -214,14 +277,17 @@ async def api_newCarCosts(*, prj, carNum, openid, repair_type,
         invoice=invoice,
         deduct=deduct,
         commet=commet,
-        repairLocation=repair_location)
+        repairLocation=repair_location,
+        flagIcon=flagIcon)
 
     response = await carCost.save()
     data = {}
     if response == 1:
         # 添加提交的 form_id
-        userform = UserFormid(formid=form_id, openid=openid,
-                              update_time=time.strftime('%Y-%m-%d', time.localtime(time.time())))
+        userform = UserFormid(
+            formid=form_id,
+            openid=openid,
+            update_time=time.strftime('%Y-%m-%d', time.localtime(time.time())))
         await userform.save()
         data['code'] = 0
     else:
