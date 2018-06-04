@@ -227,9 +227,9 @@ async def api_get_carCosts(*, access_token, page):
     else:
         limit = " LIMIT %d,%d" % ((int(page) - int(1)) * int(5), 5)
         conditions = conditions + ' and ' + 'comName=' + auths[0][
-            'comName'] + limit
+            'comName'] + " ORDER by create_time DESC " + limit
         if auths[0]['cauth'] == 1:
-            conditions = 'comName=' + auths[0]['comName'] + limit
+            conditions = 'comName=' + auths[0]['comName'] + " ORDER by create_time DESC " + limit
         logging.info("查询条件 %s " % conditions)
 
         carCost = await CarCost.findAll(conditions)
@@ -305,6 +305,37 @@ async def api_delCarCosts(*, itemid):
     else:
         data = {"code": -1}
     return json.dumps(data)
+
+
+@get('/countCarCosts')
+async def api_countCarCosts():
+    count = 'sum(repairCost)'
+    # 计算过路费、加油费、保养费、违章缴费
+    costType = ['过路费', '加油费', '保养费', '违章缴费']
+    data = []
+
+    for cost in costType:
+        conditions = 'repairType = "' + cost + '"'
+        value = await CarCost.findOne(count, conditions, count=1)
+        if value[count] is None:
+            value[count] = 0
+        data.append(value[count])
+
+    year = await CarCost.findOne('YEAR(CURRENT_DATE)', '', count=1)
+    for cost in costType:
+        type = 'repairType = "' + cost + '"'
+        for index in range(12):
+            conditions = 'YEAR(create_time)= "' + str(year['YEAR(CURRENT_DATE)']) + '" AND MONTH(create_time)="' + str(
+                index + 1) + '" AND ' + type
+            value = await CarCost.findOne(count, conditions, count=1)
+            if value[count] is None:
+                value[count] = 0
+            print(value[count])
+
+            data.append(value[count])
+
+    print(len(data))
+    return data
 
 
 @get('/qiniuToken')

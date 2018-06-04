@@ -254,10 +254,14 @@ class Model(dict, metaclass=ModelMetaclass):
             sql.append('order by')
             sql.append(orderBy)
 
-        rs = await select(' '.join(sql), [], 1)
+        rs = await select(' '.join(sql), [], None)
         if len(rs) == 0:
             return None
-        return cls(**rs[0])
+        count = kw.get('count', 1)
+        if count == 1:
+            return cls(**rs[0])
+        else:
+            return [cls(**r) for r in rs]
 
     @classmethod
     async def find(cls, pk):
