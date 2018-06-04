@@ -323,10 +323,10 @@ async def api_countCarCosts():
 
     year = await CarCost.findOne('YEAR(CURRENT_DATE)', '', count=1)
     for cost in costType:
-        type = 'repairType = "' + cost + '"'
+        repairType = 'repairType = "' + cost + '"'
         for index in range(12):
             conditions = 'YEAR(create_time)= "' + str(year['YEAR(CURRENT_DATE)']) + '" AND MONTH(create_time)="' + str(
-                index + 1) + '" AND ' + type
+                index + 1) + '" AND ' + repairType
             value = await CarCost.findOne(count, conditions, count=1)
             if value[count] is None:
                 value[count] = 0
