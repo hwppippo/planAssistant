@@ -320,7 +320,8 @@ async def api_countCarCosts():
         if value[count] is None:
             value[count] = 0
         data.append(value[count])
-
+    # TODO 优化查询每月数据为一次 SQL 执行
+    
     year = await CarCost.findOne('YEAR(CURRENT_DATE)', '', count=1)
     for cost in costType:
         repairType = 'repairType = "' + cost + '"'
